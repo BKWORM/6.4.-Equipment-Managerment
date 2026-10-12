@@ -219,7 +219,7 @@
         </span>
 
         <!-- 1. Danh Mục Thiết Bị (Master List - 153 TB) -->
-        <button type="button" id="sidebar-nav-list" onclick="switchMainView('list')" class="sidebar-nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition text-left text-slate-300 hover:text-white hover:bg-slate-800">
+        <button type="button" id="sidebar-nav-list" onclick="switchMainView('list')" class="sidebar-nav-item active w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left bg-blue-600 text-white shadow-xs">
           <div class="flex items-center space-x-3 truncate">
             <svg class="w-5 h-5 text-blue-200 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
@@ -230,7 +230,7 @@
         </button>
 
         <!-- 2. Kế Hoạch Năm (Hiệu Chuẩn & Bảo Trì 2027) -->
-        <button type="button" id="sidebar-nav-plan" onclick="switchMainView('plan')" class="sidebar-nav-item active w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left bg-amber-500 text-white shadow-xs">
+        <button type="button" id="sidebar-nav-plan" onclick="switchMainView('plan')" class="sidebar-nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition text-left text-slate-300 hover:text-white hover:bg-slate-800">
           <div class="flex items-center space-x-3 truncate">
             <svg class="w-5 h-5 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -279,9 +279,9 @@
           <span class="truncate">Sắp đến hạn trong 60 ngày</span>
         </button>
 
-        <button type="button" onclick="quickFilterSidebar('CATEGORY_7')" class="w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition text-left">
-          <span class="w-2 h-2 rounded-full bg-rose-600 shrink-0"></span>
-          <span class="truncate">Thiết bị hỏng (Khoản 6.4.9)</span>
+        <button type="button" onclick="quickFilterSidebar('ISOLATED')" class="w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition text-left" title="Xem danh sách thiết bị cách ly chờ sửa chữa hoặc chờ thanh lý">
+          <span class="w-2 h-2 rounded-full bg-rose-500 shrink-0 animate-pulse"></span>
+          <span class="truncate">Chờ sửa/thanh lý (Khoản 6.4.9)</span>
         </button>
 
         <button type="button" onclick="exportAllEventsExcel()" class="w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-xs font-medium text-emerald-400 hover:text-emerald-300 hover:bg-slate-800 transition text-left" title="Xuất toàn bộ nhật ký sự kiện vòng đời thiết bị ra file Excel">
@@ -469,25 +469,25 @@
         <div class="h-5 w-px bg-slate-200 hidden sm:block"></div>
 
         <div>
-          <h2 id="current-view-title" class="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight flex items-center">Kế Hoạch Kiểm Định, Hiệu Chuẩn &amp; Bảo Trì Năm 2027</h2>
-          <p id="current-view-subtitle" class="text-xs text-slate-500">Lập lịch trình định kỳ tuân thủ Điều khoản 6.4 &amp; 6.5 Tiêu chuẩn ISO/IEC 17025:2017</p>
+          <h2 id="current-view-title" class="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight flex items-center">Danh Mục Thiết Bị</h2>
+          <p id="current-view-subtitle" class="text-xs text-slate-500">Quản lý hồ sơ thiết bị, 25 thông số kỹ thuật, kế hoạch năm, tình trạng &amp; nhật ký sự kiện</p>
         </div>
       </div>
 
       <div class="flex items-center space-x-2">
-        <span id="current-view-badge" class="px-2.5 py-1 text-xs font-bold rounded-full bg-amber-50 text-amber-700 border border-amber-200">Kế hoạch năm 2027</span>
+        <span id="current-view-badge" class="px-2.5 py-1 text-xs font-bold rounded-full bg-blue-50 text-blue-700 border border-blue-200">Danh mục thiết bị</span>
       </div>
     </div>
 
     <!-- ======================================================== -->
     <!-- VIEW 1: DANH MỤC THIẾT BỊ (MASTER LIST 153 TB) -->
     <!-- ======================================================== -->
-    <section id="section-equipment-list" class="space-y-4 hidden">
+    <section id="section-equipment-list" class="space-y-4">
       
       <!-- SUMMARY METRIC CARDS -->
       <div id="summary-cards-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         <!-- Tổng số thiết bị -->
-        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md transition">
+        <div onclick="resetAllFilters()" class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md hover:border-blue-300 transition cursor-pointer" title="Nhấp để hiển thị toàn bộ thiết bị">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Tổng Thiết Bị</span>
             <div class="p-2 rounded-lg bg-blue-50 text-blue-600">
@@ -502,7 +502,7 @@
         </div>
 
         <!-- Đang hoạt động tốt -->
-        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md transition">
+        <div onclick="filterByStatus('OPERATIONAL')" class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md hover:border-emerald-300 transition cursor-pointer" title="Nhấp để lọc thiết bị Hoạt động tốt">
           <div class="flex items-center justify-between">
             <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Hoạt Động Tốt</span>
             <div class="p-2 rounded-lg bg-emerald-50 text-emerald-600">
@@ -517,7 +517,7 @@
         </div>
 
         <!-- Sắp đến hạn -->
-        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md transition">
+        <div onclick="filterByStatus('WARNING_DUE')" class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md hover:border-amber-300 transition cursor-pointer" title="Nhấp để lọc thiết bị Sắp đến hạn">
           <div class="flex items-center justify-between">
             <span class="text-xs font-semibold text-amber-600 uppercase tracking-wider">Sắp Đến Hạn</span>
             <div class="p-2 rounded-lg bg-amber-50 text-amber-600">
@@ -532,7 +532,7 @@
         </div>
 
         <!-- Quá hạn -->
-        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md transition">
+        <div onclick="filterByStatus('OVERDUE')" class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md hover:border-rose-400 transition cursor-pointer" title="Nhấp để lọc thiết bị Quá hạn HC/BT">
           <div class="flex items-center justify-between">
             <span class="text-xs font-semibold text-rose-600 uppercase tracking-wider">Quá Hạn HC/BT</span>
             <div class="p-2 rounded-lg bg-rose-50 text-rose-600">
@@ -546,19 +546,19 @@
           <p class="text-xs text-slate-600 font-medium mt-1">Cảnh báo Điều 6.4.9</p>
         </div>
 
-        <!-- Không dùng / Hỏng -->
-        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md transition col-span-2 sm:col-span-1">
+        <!-- Chờ Sửa / Thanh Lý -->
+        <div onclick="filterByStatus('ISOLATED')" class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md hover:border-rose-300 transition col-span-2 sm:col-span-1 cursor-pointer" title="Nhấp để lọc danh sách thiết bị Chờ sửa / thanh lý">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Không Dùng / Hỏng</span>
-            <div class="p-2 rounded-lg bg-slate-100 text-slate-600">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
+            <span class="text-xs font-semibold text-rose-600 uppercase tracking-wider">Chờ Sửa / Thanh Lý</span>
+            <div class="p-2 rounded-lg bg-rose-50 text-rose-600">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
             </div>
           </div>
           <div class="mt-2 flex items-baseline space-x-2">
-            <span id="metric-disposed" class="text-2xl sm:text-3xl font-extrabold text-slate-700">0</span>
-            <span class="text-xs text-slate-600 font-medium">cách ly</span>
+            <span id="metric-disposed" class="text-2xl sm:text-3xl font-extrabold text-rose-600">0</span>
+            <span class="text-xs text-rose-600/80 font-medium">thiết bị</span>
           </div>
-          <p class="text-xs text-slate-600 font-medium mt-1">Đã dán nhãn cách ly</p>
+          <p class="text-xs text-slate-600 font-medium mt-1">Đã dán nhãn cách ly (K.6.4.9)</p>
         </div>
       </div>
 
@@ -584,9 +584,11 @@
               <option value="OPERATIONAL">🟢 Hoạt động tốt</option>
               <option value="WARNING_DUE">🟠 Sắp đến hạn (60 ngày)</option>
               <option value="OVERDUE">🔴 Quá hạn HC/BT</option>
-              <option value="REPAIRING">🟠 Đang sự cố / sửa chữa</option>
+              <option value="ISOLATED">⚠️ Chờ sửa / thanh lý (Tất cả cách ly)</option>
+              <option value="ISOLATED_REPAIR">🟠 Cách ly - Chờ sửa chữa</option>
+              <option value="ISOLATED_DISPOSAL">🟠 Cách ly - Chờ thanh lý</option>
+              <option value="DISPOSED">⚫ Đã bỏ / thanh lý</option>
               <option value="OUT_OF_SERVICE">⚪ Không sử dụng</option>
-              <option value="DISPOSED">⚫ Đã hỏng / Loại bỏ</option>
             </select>
 
             <!-- Dropdown lọc người theo dõi -->
@@ -659,9 +661,9 @@
               0: Không sử dụng <span id="count-cat-0" class="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-slate-200 text-slate-700">0</span>
             </button>
 
-            <!-- 7: Hỏng -->
-            <button type="button" onclick="filterByCategory('7')" data-cat="7" class="cat-pill px-3 py-1.5 rounded-xl text-sm font-semibold transition-all border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-900">
-              7: Hỏng <span id="count-cat-7" class="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-rose-100 text-rose-700">0</span>
+            <!-- 7: Chờ sửa/thanh lý -->
+            <button type="button" onclick="filterByCategory('7')" data-cat="7" class="cat-pill px-3 py-1.5 rounded-xl text-sm font-semibold transition-all border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-900" title="Danh sách thiết bị gặp sự cố hoặc cách ly chờ sửa chữa / chờ thanh lý">
+              7: Chờ sửa/thanh lý <span id="count-cat-7" class="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-rose-100 text-rose-700 font-bold">0</span>
             </button>
           </div>
         </div>
@@ -748,7 +750,7 @@
     <!-- ======================================================== -->
     <!-- VIEW 2: KẾ HOẠCH NĂM (ANNUAL CALIBRATION & MAINTENANCE PLAN) -->
     <!-- ======================================================== -->
-    <section id="section-annual-plan" class="space-y-4">
+    <section id="section-annual-plan" class="space-y-4 hidden">
       
       <!-- TOOLBAR KẾ HOẠCH NĂM: CHỌN NĂM (MẶC ĐỊNH 2027) & LỌC HẠNG MỤC -->
       <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs space-y-3.5">
@@ -1400,10 +1402,20 @@
       <!-- Modal Footer -->
       <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
         <div class="flex items-center space-x-2">
+          <!-- Nút Sự Cố / Cách Ly -->
+          <button type="button" id="btn-isolate-equipment-action" onclick="checkAdminAction(() => openIsolateEquipmentModal(currentViewEqId))" class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 transition" title="Ghi nhận sự cố &amp; dán nhãn cách ly theo Điều 6.4.9 ISO 17025">
+            <svg class="w-4 h-4 mr-1 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <span>Sự cố / Cách ly</span>
+          </button>
+          <!-- Nút Đã Sửa Xong (Hiển thị khi đang cách ly) -->
+          <button type="button" id="btn-restore-equipment-action" onclick="checkAdminAction(() => openRestoreEquipmentModal(currentViewEqId))" class="hidden inline-flex items-center px-3 py-1.5 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white shadow-xs transition active:scale-95" title="Đã khắc phục sự cố, phục hồi về danh mục ban đầu">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>✅ Đã Sửa Xong (Dùng lại)</span>
+          </button>
           <!-- Nút Loại bỏ thiết bị hỏng (Khoản 6.4.9) -->
-          <button type="button" id="btn-dispose-equipment-action" onclick="checkAdminAction(() =&gt; openDisposeModal(currentViewEqId))" class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition" title="Ghi nhận loại bỏ / cách ly thiết bị hỏng theo Điều 6.4.9 ISO 17025">
+          <button type="button" id="btn-dispose-equipment-action" onclick="checkAdminAction(() => openDisposeEquipmentModal(currentViewEqId))" class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition" title="Ghi nhận loại bỏ / cách ly thiết bị hỏng theo Điều 6.4.9 ISO 17025">
             <svg class="w-4 h-4 mr-1 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
-            <span>Loại bỏ thiết bị hỏng</span>
+            <span>Loại bỏ / Thanh lý</span>
           </button>
         </div>
 
@@ -1465,7 +1477,7 @@
               <option value="5">5: UPS</option>
               <option value="6">6: Pipette</option>
               <option value="0">0: Không sử dụng</option>
-              <option value="7">7: Hỏng</option>
+              <option value="7">7: Chờ sửa/thanh lý (Sự cố/Cách ly)</option>
             </select>
           </div>
           <!-- NHẬN DIỆN THIẾT BỊ XUẤT HIỆN TRONG BẢNG 1 HOẶC 2 CỦA NĐ22 VÀ TT20 -->
@@ -1645,11 +1657,14 @@
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Loại sự kiện *</label>
           <select id="event-type" required="" onchange="handleEventTypeChange()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-semibold text-slate-800">
+            <option value="Sự cố/ Cách ly">⚠️ Sự cố/ Cách ly (Dán nhãn chờ sửa chữa / chờ thanh lý)</option>
+            <option value="Khắc phục sự cố / Đã sửa chữa xong">🛠️ Khắc phục sự cố / Đã sửa chữa xong (Đưa vào sử dụng lại)</option>
+            <option value="Thiết bị đã bỏ/thanh lý">🚫 Thiết bị đã bỏ/thanh lý (Loại bỏ theo Khoản 6.4.9)</option>
             <option value="Thay đổi người theo dõi/sử dụng">🔄 Thay đổi người theo dõi/sử dụng (Bàn giao thiết bị)</option>
             <option value="Hiệu chuẩn / Kiểm định">🔬 Hiệu chuẩn / Kiểm định định kỳ</option>
             <option value="Bảo trì định kỳ / Đột xuất">🛠️ Bảo trì định kỳ / Đột xuất</option>
             <option value="Kiểm tra giữa kỳ">📋 Kiểm tra giữa kỳ / Kiểm tra chức năng</option>
-            <option value="Sự cố &amp; Sửa chữa">⚠️ Sự cố &amp; Sửa chữa</option>
+            <option value="Sự cố &amp; Sửa chữa">⚠️ Sự cố &amp; Sửa chữa thông thường</option>
             <option value="Nhật ký sử dụng">⏱️ Nhật ký sử dụng</option>
             <option value="Đánh giá nghiệm thu (IQ-OQ-PQ)">✅ Đánh giá nghiệm thu (IQ-OQ-PQ)</option>
             <option value="Tiếp nhận thiết bị">📦 Tiếp nhận thiết bị</option>
@@ -1664,7 +1679,142 @@
             <span>Chi Tiết Bàn Giao Thiết Bị</span>
           </div>
 
+                  <!-- HỘP ĐẶC BIỆT KHI CHỌN SỰ KIỆN SỰ CỐ / CÁCH LY (KHOẢN 6.4.9) -->
+        <div id="event-isolation-box" class="p-4 bg-amber-50/80 rounded-xl border border-amber-300 space-y-3">
+          <div class="flex items-center space-x-2 text-xs font-bold text-amber-900 uppercase">
+            <svg class="w-4 h-4 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <span>Chi Tiết Sự Cố &amp; Dán Nhãn Cách Ly (Khoản 6.4.9 ISO 17025)</span>
+          </div>
+
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-amber-900 mb-1">Mục đích cách ly *</label>
+              <select id="event-isolation-type" class="w-full px-3 py-2 text-sm bg-white border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 font-semibold text-slate-800">
+                <option value="REPAIR">🟠 Chờ sửa chữa (Tạm ngừng vận hành, cách ly chờ sửa)</option>
+                <option value="DISPOSAL">🔴 Chờ thanh lý (Hư hỏng không thể phục hồi, chờ thanh lý)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Cán bộ phát hiện / Đề xuất</label>
+              <input type="text" id="event-isolation-proposer" placeholder="Họ tên cán bộ đề xuất..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500">
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Mô tả hiện tượng sự cố / Lý do cách ly *</label>
+              <textarea id="event-isolation-reason" rows="2" placeholder="Ghi rõ hiện tượng sự cố, nguyên nhân nghi ngờ hoặc lỗi phát hiện..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500"></textarea>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Biện pháp cách ly &amp; Dán nhãn nhận diện (Khoản 6.4.9) *</label>
+              <input type="text" id="event-isolation-measures" value="Dán nhãn vàng/đỏ THIẾT BỊ SỰ CỐ - CÁCH LY CHỜ SỬA CHỮA / THANH LÝ, ngắt nguồn điện và đưa vào khu vực cách ly tránh sử dụng nhầm." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 font-medium">
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2 pt-1">
+            <input type="checkbox" id="event-isolation-confirm-checkbox" checked class="w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500">
+            <label for="event-isolation-confirm-checkbox" class="text-xs font-medium text-amber-900 cursor-pointer">
+              Đưa thiết bị vào danh sách riêng <strong>"Chờ sửa/thanh lý"</strong> (tự động không xuất hiện trong danh sách sắp đến hạn hoặc quá hạn)
+            </label>
+          </div>
+        </div>
+
+        <!-- HỘP ĐẶC BIỆT KHI CHỌN SỰ KIỆN THIẾT BỊ ĐÃ BỎ / THANH LÝ -->
+        <div id="event-dispose-box" class="hidden p-4 bg-rose-50/80 rounded-xl border border-rose-300 space-y-3">
+          <div class="flex items-center space-x-2 text-xs font-bold text-rose-900 uppercase">
+            <svg class="w-4 h-4 text-rose-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
+            <span>Quyết Định Thanh Lý &amp; Loại Bỏ Thiết Bị (Khoản 6.4.9 ISO 17025)</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-rose-900 mb-1">Căn cứ / Quyết định thanh lý số *</label>
+              <input type="text" id="event-dispose-decision" placeholder="VD: Quyết định số 18/QĐ-TT1..." class="w-full px-3 py-2 text-sm bg-white border border-rose-300 rounded-lg focus:ring-2 focus:ring-rose-500 font-medium text-slate-800">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Người / Hội đồng phê duyệt</label>
+              <input type="text" id="event-dispose-approver" value="Hội đồng thanh lý tài sản - Giám đốc PTN" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500">
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Lý do thanh lý / loại bỏ hoàn toàn *</label>
+              <textarea id="event-dispose-reason" rows="2" placeholder="Ghi rõ lý do: Hỏng nặng không thể khắc phục, hết khấu hao, không còn phù hợp tiêu chuẩn..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Hình thức xử lý sau thanh lý</label>
+              <select id="event-dispose-method" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 font-medium">
+                <option value="Bàn giao xử lý rác thải kỹ thuật / Tiêu hủy">Tiêu hủy / Bàn giao xử lý rác thải kỹ thuật</option>
+                <option value="Bán đấu giá / Thanh lý tài sản nhà nước">Bán đấu giá / Thanh lý tài sản nhà nước</option>
+                <option value="Lưu kho phế liệu cách ly">Lưu kho phế liệu cách ly</option>
+                <option value="Chuyển mục đích sử dụng (Mô hình đào tạo)">Chuyển mục đích sử dụng (Mô hình đào tạo)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Biện pháp niêm phong &amp; Dán nhãn</label>
+              <input type="text" id="event-dispose-measures" value="Dán nhãn đỏ THIẾT BỊ ĐÃ THANH LÝ - CẤM SỬ DỤNG, niêm phong và di chuyển khỏi PTN." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 font-medium">
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2 pt-1">
+            <input type="checkbox" id="event-dispose-confirm-checkbox" checked class="w-4 h-4 text-rose-600 rounded border-slate-300 focus:ring-rose-500">
+            <label for="event-dispose-confirm-checkbox" class="text-xs font-medium text-rose-900 cursor-pointer">
+              Xác nhận thiết bị đã bỏ/thanh lý (Ngưng sử dụng vĩnh viễn, đưa vào mục Chờ sửa/thanh lý và loại bỏ khỏi mọi thông báo hạn)
+            </label>
+          </div>
+        </div>
+
+
+        <!-- HỘP ĐẶC BIỆT KHI CHỌN SỰ KIỆN KHẮC PHỤC SỰ CỐ / ĐÃ SỬA CHỮA XONG -->
+        <div id="event-repair-box" class="hidden p-4 bg-emerald-50/80 rounded-xl border border-emerald-300 space-y-3">
+          <div class="flex items-center space-x-2 text-xs font-bold text-emerald-900 uppercase">
+            <svg class="w-4 h-4 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>Khắc Phục Sự Cố &amp; Đưa Thiết Bị Vào Hoạt Động Lại</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-emerald-900 mb-1">Khôi phục về danh mục ban đầu *</label>
+              <select id="event-repair-category" class="w-full px-3 py-2 text-sm bg-white border border-emerald-300 rounded-lg focus:ring-2 focus:ring-emerald-500 font-semibold text-slate-800">
+                <option value="1">1: Thiết bị chính</option>
+                <option value="2">2: TB hiệu chuẩn</option>
+                <option value="3">3: TB phụ trợ</option>
+                <option value="4">4: Tủ hút</option>
+                <option value="5">5: UPS</option>
+                <option value="6">6: Pipette</option>
+                <option value="0">0: Không sử dụng</option>
+              </select>
+              <span class="text-[10px] text-emerald-700 block mt-0.5">Tự động chọn danh mục trước khi sự kiện hỏng</span>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Đơn vị / Cán bộ sửa chữa</label>
+              <input type="text" id="event-repair-performer" placeholder="Đơn vị cung cấp / kỹ sư sửa chữa..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Nội dung sửa chữa &amp; Linh kiện thay thế</label>
+              <textarea id="event-repair-details" rows="2" placeholder="Ghi nhận các linh kiện đã thay thế, thao tác sửa chữa, cân chỉnh..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500"></textarea>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Kết quả kiểm tra nghiệm thu sau sửa chữa *</label>
+              <input type="text" id="event-repair-result" value="Đạt yêu cầu kỹ thuật, thông số hoạt động ổn định, đủ điều kiện đưa vào sử dụng lại." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 font-medium">
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2 pt-1">
+            <input type="checkbox" id="event-repair-confirm-checkbox" checked class="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
+            <label for="event-repair-confirm-checkbox" class="text-xs font-medium text-emerald-900 cursor-pointer">
+              Đưa thiết bị trở lại danh mục như trước khi sự kiện hỏng (Tự động đưa vào trạng thái Hoạt động tốt nếu trong hạn HC/BT)
+            </label>
+          </div>
+        </div>
+
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Người bàn giao (Hiện tại)</label>
               <input type="text" id="event-custody-old-manager" readonly="" class="w-full px-3 py-2 text-sm bg-slate-100 border border-slate-300 rounded-lg text-slate-600 font-medium">
@@ -1820,7 +1970,7 @@
 
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Biện pháp cách ly &amp; Dán nhãn nhận diện *</label>
-          <input type="text" id="dispose-measures" value="Dán nhãn đỏ " thiẾt="" bỊ="" hỎng="" -="" cẤm="" sỬ="" dỤng".="" ngắt="" nguồn="" điện="" và="" đưa="" vào="" kho="" cách="" ly="" chờ="" thanh="" lý."="" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 font-medium">
+          <input type="text" id="dispose-measures" value="Dán nhãn đỏ THIẾT BỊ HỎNG - CẤM SỬ DỤNG. Ngắt nguồn điện và đưa vào kho cách ly chờ thanh lý."" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 font-medium">
         </div>
 
         <div class="pt-3 border-t border-slate-200 flex justify-end space-x-3">
@@ -1931,7 +2081,7 @@
           <div class="flex items-center justify-between">
             <h4 class="text-xs font-bold text-slate-800 uppercase flex items-center">
               <span>Mã Nguồn Google Apps Script (Code.gs) Quản Lý 2 Sheet</span>
-              <span class="ml-2 px-2 py-0.5 text-[10px] rounded-full bg-emerald-100 text-emerald-800 font-bold">DM_Chung &amp; TaiKhoan</span>
+              <span class="ml-2 px-2 py-0.5 text-[10px] rounded-full bg-emerald-100 text-emerald-800 font-bold">Đồng bộ đầy đủ 6 Sheet</span>
             </h4>
             <button type="button" onclick="copyGoogleAppsScriptCode()" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition flex items-center space-x-1">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
@@ -1939,7 +2089,7 @@
             </button>
           </div>
           <p class="text-xs text-slate-600 font-medium">
-            Đoạn mã này tự động tạo và đồng bộ 4 sheet trong Google Spreadsheet: <strong>"DM_Chung"</strong> (toàn bộ thiết bị &amp; nhật ký sự kiện), <strong>"DM_ND22"</strong> (Nghị định 22/2026/NĐ-CP), <strong>"DM_TT20"</strong> (Thông tư liên tịch 20/2013/TTLT-BYT-BCT-BNNPTNT), và <strong>"TaiKhoan"</strong> (tài khoản &amp; phân quyền). Mở Google Sheet → Tiện ích mở rộng → Apps Script → dán mã này và Triển khai (Deploy Web app - Anyone).
+            Đoạn mã này tự động tạo và đồng bộ đầy đủ toàn bộ 6 sheet trong Google Spreadsheet: <strong>"DM_Chung"</strong> (toàn bộ thiết bị), <strong>"KeHoach_Nam"</strong> (kế hoạch hiệu chuẩn/bảo trì), <strong>"NhatKy_SuKien"</strong> (nhật ký vòng đời thiết bị), <strong>"DM_ND22"</strong> (Nghị định 22/2026/NĐ-CP), <strong>"DM_TT20"</strong> (Thông tư liên tịch 20/2013/TTLT-BYT-BCT-BNNPTNT), và <strong>"TaiKhoan"</strong> (tài khoản &amp; phân quyền). Mở Google Sheet → Tiện ích mở rộng → Apps Script → dán mã này và Triển khai (Deploy Web app - Anyone).
           </p>
           <div class="relative">
             <textarea id="apps-script-code-area" readonly="" class="w-full h-32 px-3 py-2 text-[11px] font-mono bg-slate-900 text-emerald-300 rounded-xl border border-slate-700 resize-none select-all focus:outline-hidden"></textarea>
@@ -2511,7 +2661,7 @@
       '5': { code: '5', name: '5: UPS', label: 'UPS', badgeClass: 'bg-orange-100 text-orange-800 border-orange-200' },
       '6': { code: '6', name: '6: Pipette', label: 'Pipette', badgeClass: 'bg-emerald-100 text-emerald-800 border-emerald-200' },
       '0': { code: '0', name: '0: Không sử dụng', label: 'Không sử dụng', badgeClass: 'bg-slate-200 text-slate-800 border-slate-300' },
-      '7': { code: '7', name: '7: Hỏng', label: 'Hỏng (Khoản 6.4.9)', badgeClass: 'bg-rose-100 text-rose-800 border-rose-200 line-through decoration-rose-500 font-bold' },
+      '7': { code: '7', name: '7: Chờ sửa/thanh lý', label: 'Chờ sửa / thanh lý (Khoản 6.4.9)', badgeClass: 'bg-rose-100 text-rose-800 border-rose-300 font-bold' },
     };
 
     // Trạng thái ứng dụng (Application State)
@@ -2630,22 +2780,25 @@
       }
     }
 
+    function filterByStatus(status) {
+      appState.selectedStatus = status;
+      appState.listPage = 1;
+      const stSelect = document.getElementById('filter-status-select');
+      if (stSelect) stSelect.value = status;
+      switchMainView('list');
+      renderEquipmentList();
+    }
+
     function quickFilterSidebar(type) {
       toggleSidebar(false);
       switchMainView('list');
 
       if (type === 'OVERDUE') {
-        const stSelect = document.getElementById('filter-status-select');
-        if (stSelect) stSelect.value = 'OVERDUE';
-        appState.selectedStatus = 'OVERDUE';
-        renderEquipmentList();
+        filterByStatus('OVERDUE');
       } else if (type === 'WARNING_DUE') {
-        const stSelect = document.getElementById('filter-status-select');
-        if (stSelect) stSelect.value = 'WARNING_DUE';
-        appState.selectedStatus = 'WARNING_DUE';
-        renderEquipmentList();
-      } else if (type === 'CATEGORY_7') {
-        filterByCategory('7');
+        filterByStatus('WARNING_DUE');
+      } else if (type === 'ISOLATED' || type === 'CATEGORY_7') {
+        filterByStatus('ISOLATED');
       }
     }
 
@@ -3262,23 +3415,56 @@
     // ==========================================
     // CÁC HÀM QUẢN LÝ THIẾT BỊ & SỰ KIỆN GỐC
     // ==========================================
-    function getEquipmentStatus(eq) {
+        function getEquipmentStatus(eq) {
       const cat = String(eq.category || '').trim();
       const note = String(eq.note || '').toLowerCase();
-      
-      if (cat === '7' || note.includes('đã hỏng') || note.includes('hỏng')) {
+      const statusStr = String(eq.status || '').toUpperCase();
+
+      // Kiểm tra nếu thiết bị đang ở trạng thái cách ly / sự cố / chờ sửa chữa hoặc chờ thanh lý
+      const isExplicitRepair = eq.isIsolated && (eq.isolatedType === 'REPAIR' || eq.status === 'ISOLATED_REPAIR' || note.includes('chờ sửa'));
+      const isExplicitDisposal = (eq.isIsolated && (eq.isolatedType === 'DISPOSAL' || eq.status === 'ISOLATED_DISPOSAL' || note.includes('chờ thanh lý')))
+        || cat === '7' || statusStr === 'DISPOSED' || statusStr === 'ISOLATED_DISPOSAL'
+        || note.includes('đã hỏng') || note.includes('hỏng') || note.includes('thanh lý');
+
+      if (isExplicitRepair) {
         return {
-          code: 'DISPOSED',
-          label: 'Hỏng / Đã loại bỏ',
-          badgeClass: 'bg-rose-100 text-rose-800 border-rose-300 font-bold',
-          dotClass: 'bg-rose-600',
-          desc: 'Cách ly theo Điều 6.4.9 ISO 17025'
+          code: 'ISOLATED_REPAIR',
+          groupCode: 'ISOLATED',
+          label: 'Cách ly - Chờ sửa chữa',
+          badgeClass: 'bg-amber-100 text-amber-900 border-amber-300 font-bold',
+          dotClass: 'bg-amber-500 animate-pulse',
+          desc: 'Sự cố - Đã dán nhãn cách ly chờ sửa chữa (Khoản 6.4.9 ISO 17025)'
         };
       }
 
-      if (cat === '0' || note.includes('không dùng') || note.includes('chuyển vi sinh')) {
+      const isExplicitDisposed = eq.isDisposed || statusStr === 'DISPOSED' || note.includes('đã bỏ/thanh lý') || note.includes('đã thanh lý');
+
+      if (isExplicitDisposed) {
+        return {
+          code: 'DISPOSED',
+          groupCode: 'ISOLATED',
+          label: 'Đã bỏ / thanh lý',
+          badgeClass: 'bg-slate-800 text-white border-slate-700 font-bold',
+          dotClass: 'bg-rose-600',
+          desc: 'Thiết bị đã bỏ/thanh lý ngưng sử dụng hoàn toàn (Khoản 6.4.9 ISO 17025)'
+        };
+      }
+
+      if (isExplicitDisposal) {
+        return {
+          code: 'ISOLATED_DISPOSAL',
+          groupCode: 'ISOLATED',
+          label: 'Cách ly - Chờ thanh lý',
+          badgeClass: 'bg-rose-100 text-rose-800 border-rose-300 font-bold',
+          dotClass: 'bg-rose-600',
+          desc: 'Thiết bị hỏng - Đã dán nhãn cách ly chờ thanh lý (Khoản 6.4.9 ISO 17025)'
+        };
+      }
+
+      if (cat === '0' || statusStr === 'OUT_OF_SERVICE' || note.includes('không dùng') || note.includes('chuyển vi sinh')) {
         return {
           code: 'OUT_OF_SERVICE',
+          groupCode: 'OUT_OF_SERVICE',
           label: 'Không sử dụng',
           badgeClass: 'bg-slate-200 text-slate-700 border-slate-300',
           dotClass: 'bg-slate-500',
@@ -3286,10 +3472,12 @@
         };
       }
 
+      // Đánh giá hạn hiệu chuẩn / bảo trì đối với thiết bị hoạt động bình thường
       const nextDateStr = eq.nextCalibMaintDate;
       if (!nextDateStr || nextDateStr === '1899-12-31' || nextDateStr === '1900-12-31' || nextDateStr === '-') {
         return {
           code: 'OPERATIONAL',
+          groupCode: 'OPERATIONAL',
           label: 'Hoạt động tốt',
           badgeClass: 'bg-emerald-100 text-emerald-800 border-emerald-300',
           dotClass: 'bg-emerald-500',
@@ -3304,6 +3492,7 @@
       if (isNaN(nextDate.getTime())) {
         return {
           code: 'OPERATIONAL',
+          groupCode: 'OPERATIONAL',
           label: 'Hoạt động tốt',
           badgeClass: 'bg-emerald-100 text-emerald-800 border-emerald-300',
           dotClass: 'bg-emerald-500',
@@ -3317,6 +3506,7 @@
       if (diffDays < 0) {
         return {
           code: 'OVERDUE',
+          groupCode: 'OVERDUE',
           label: 'Quá hạn HC/BT',
           badgeClass: 'bg-rose-100 text-rose-800 border-rose-300 font-bold animate-pulse',
           dotClass: 'bg-rose-600',
@@ -3325,6 +3515,7 @@
       } else if (diffDays <= 60) {
         return {
           code: 'WARNING_DUE',
+          groupCode: 'WARNING_DUE',
           label: 'Sắp đến hạn',
           badgeClass: 'bg-amber-100 text-amber-800 border-amber-300 font-semibold',
           dotClass: 'bg-amber-500',
@@ -3333,6 +3524,7 @@
       } else {
         return {
           code: 'OPERATIONAL',
+          groupCode: 'OPERATIONAL',
           label: 'Hoạt động tốt',
           badgeClass: 'bg-emerald-100 text-emerald-800 border-emerald-300',
           dotClass: 'bg-emerald-500',
@@ -3454,7 +3646,10 @@
       }
       checkAndRenderAlerts();
 
-      // 4. TỰ ĐỘNG NẠP DỮ LIỆU TỪ GOOGLE SHEET KHI MỞ LINK (Fix triệt để lỗi phải nạp thủ công mới cuộn được)
+      // 4. Mặc định mở giao diện "Danh mục thiết bị" khi mở mới app
+      switchMainView('list');
+
+      // 5. TỰ ĐỘNG NẠP DỮ LIỆU TỪ GOOGLE SHEET KHI MỞ LINK (Fix triệt để lỗi phải nạp thủ công mới cuộn được)
       if (appState.gsheetUrl) {
         importFromGoogleSheet({ isAuto: true, silent: (appState.equipments.length > 0) });
       }
@@ -3979,12 +4174,12 @@ function updateAuthUI() {
       select.value = current || 'ALL';
     }
 
-    function updateMetricCards() {
+        function updateMetricCards() {
       let total = appState.equipments.length;
       let operational = 0;
       let warning = 0;
       let overdue = 0;
-      let disposed = 0;
+      let isolated = 0;
 
       const catCounts = { 'ALL': total, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '0': 0, '7': 0 };
 
@@ -3993,10 +4188,12 @@ function updateAuthUI() {
         if (st.code === 'OPERATIONAL') operational++;
         else if (st.code === 'WARNING_DUE') warning++;
         else if (st.code === 'OVERDUE') overdue++;
-        else if (st.code === 'OUT_OF_SERVICE' || st.code === 'DISPOSED') disposed++;
+        else if (st.groupCode === 'ISOLATED' || st.code === 'OUT_OF_SERVICE') isolated++;
 
         const c = String(eq.category || '').trim();
-        if (catCounts[c] !== undefined) {
+        if (st.groupCode === 'ISOLATED') {
+          catCounts['7']++;
+        } else if (catCounts[c] !== undefined) {
           catCounts[c]++;
         }
       });
@@ -4011,7 +4208,7 @@ function updateAuthUI() {
       if (elOp) elOp.textContent = operational;
       if (elWarn) elWarn.textContent = warning;
       if (elOver) elOver.textContent = overdue;
-      if (elDisp) elDisp.textContent = disposed;
+      if (elDisp) elDisp.textContent = isolated;
 
       const sideEq = document.getElementById('sidebar-eq-count');
       if (sideEq) sideEq.textContent = total;
@@ -4026,7 +4223,7 @@ function updateAuthUI() {
       }
     }
 
-    function checkAndRenderAlerts() {
+        function checkAndRenderAlerts() {
       const container = document.getElementById('alert-container');
       if (!container) return;
 
@@ -4035,6 +4232,8 @@ function updateAuthUI() {
 
       appState.equipments.forEach(eq => {
         const st = getEquipmentStatus(eq);
+        // Thiết bị cách ly hoặc chờ sửa/thanh lý tuyệt đối không nằm trong danh sách quá hạn hoặc sắp đến hạn
+        if (st.groupCode === 'ISOLATED' || eq.isIsolated || eq.category === '7' || eq.category === '0') return;
         if (st.code === 'OVERDUE') overdueList.push(eq);
         else if (st.code === 'WARNING_DUE') warningList.push(eq);
       });
@@ -4057,7 +4256,7 @@ function updateAuthUI() {
                 CẢNH BÁO QUÁ HẠN HIỆU CHUẨN / BẢO TRÌ (ISO 17025 KHOẢN 6.4.9)
               </h4>
               <p class="text-xs text-rose-800 mt-0.5">
-                Phát hiện <strong>${overdueList.length}</strong> thiết bị đã quá hạn hiệu chuẩn hoặc bảo trì định kỳ. Cần ngưng sử dụng hoặc cách ly ngay:
+                Phát hiện <strong>${overdueList.length}</strong> thiết bị đang vận hành đã quá hạn hiệu chuẩn hoặc bảo trì định kỳ. Cần ngưng sử dụng hoặc cách ly ngay:
               </p>
               <div class="mt-2 flex flex-wrap gap-1.5">
                 ${overdueList.slice(0, 8).map(e => `
@@ -4147,15 +4346,34 @@ function updateAuthUI() {
       if (!tbody) return;
 
       let filtered = appState.equipments.filter(eq => {
-        if (appState.selectedCategory !== 'ALL' && String(eq.category || '').trim() !== appState.selectedCategory) {
-          return false;
+        const st = getEquipmentStatus(eq);
+
+        if (appState.selectedCategory !== 'ALL') {
+          if (appState.selectedCategory === '7') {
+            if (String(eq.category || '').trim() !== '7' && st.groupCode !== 'ISOLATED') {
+              return false;
+            }
+          } else {
+            if (String(eq.category || '').trim() !== appState.selectedCategory) {
+              return false;
+            }
+          }
         }
         if (appState.selectedManager !== 'ALL' && String(eq.manager || '').trim() !== appState.selectedManager) {
           return false;
         }
         if (appState.selectedStatus !== 'ALL') {
-          const st = getEquipmentStatus(eq);
-          if (st.code !== appState.selectedStatus) return false;
+          if (appState.selectedStatus === 'ISOLATED') {
+            if (st.groupCode !== 'ISOLATED') return false;
+          } else if (appState.selectedStatus === 'ISOLATED_REPAIR') {
+            if (st.code !== 'ISOLATED_REPAIR') return false;
+          } else if (appState.selectedStatus === 'ISOLATED_DISPOSAL') {
+            if (st.code !== 'ISOLATED_DISPOSAL') return false;
+          } else {
+            if (st.code !== appState.selectedStatus && st.groupCode !== appState.selectedStatus) {
+              return false;
+            }
+          }
         }
         if (appState.searchQuery) {
           const q = appState.searchQuery;
@@ -4285,7 +4503,16 @@ function updateAuthUI() {
                 <button type="button" onclick="openEquipmentDetailModal('${eq.id}')" class="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Xem chi tiết">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                 </button>
-                <button type="button" onclick="checkAdminAction(() => openAddEventModal('${eq.id}'))" class="p-1.5 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition" title="Ghi nhận sự kiện">
+                ${st.code === 'ISOLATED_REPAIR' ? `
+                  <button type="button" onclick="checkAdminAction(() => openRestoreEquipmentModal('${eq.id}'))" class="p-1.5 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition" title="Đã sửa xong - Đưa vào sử dụng lại">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  </button>
+                ` : `
+                  <button type="button" onclick="checkAdminAction(() => openIsolateEquipmentModal('${eq.id}'))" class="p-1.5 text-amber-500 hover:text-amber-700 hover:bg-amber-50 rounded-lg transition" title="Sự cố / Cách ly thiết bị">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                  </button>
+                `}
+                <button type="button" onclick="checkAdminAction(() => openAddEventModal('${eq.id}'))" class="p-1.5 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition" title="Ghi nhận sự kiện / Hồ sơ">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </button>
                 <button type="button" onclick="checkAdminAction(() => openEditEquipmentModal('${eq.id}'))" class="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition" title="Chỉnh sửa">
@@ -4382,7 +4609,8 @@ function updateAuthUI() {
       const planItems = [];
 
       appState.equipments.forEach(eq => {
-        if (eq.category === '7' || eq.category === '0') return;
+        const st = getEquipmentStatus(eq);
+        if (st.groupCode === 'ISOLATED' || eq.isIsolated || eq.category === '7' || eq.category === '0') return;
 
         const nextDateStr = eq.nextCalibMaintDate;
         if (!nextDateStr || nextDateStr === '1899-12-31' || nextDateStr === '1900-12-31' || nextDateStr === '-') return;
@@ -4634,7 +4862,35 @@ function updateAuthUI() {
       const st = getEquipmentStatus(eq);
       const statusBanner = document.getElementById('view-eq-status-banner');
       if (statusBanner) {
-        statusBanner.className = `p-3.5 rounded-xl border flex items-center justify-between ${st.code === 'OVERDUE' ? 'bg-rose-50 border-rose-200' : (st.code === 'WARNING_DUE' ? 'bg-amber-50 border-amber-200' : (st.code === 'DISPOSED' ? 'bg-slate-100 border-slate-300' : 'bg-emerald-50 border-emerald-200'))}`;
+        let bannerBg = 'bg-emerald-50 border-emerald-200';
+        let actionBtnHtml = '';
+
+        if (st.code === 'ISOLATED_REPAIR') {
+          bannerBg = 'bg-amber-50 border-amber-300';
+          actionBtnHtml = `
+            <button type="button" onclick="checkAdminAction(() => openRestoreEquipmentModal('${eq.id}'))" class="px-3 py-1.5 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white shadow-xs transition active:scale-95 flex items-center space-x-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>✅ Đã Sửa Xong (Dùng Lại)</span>
+            </button>
+          `;
+        } else if (st.code === 'DISPOSED') {
+          bannerBg = 'bg-slate-100 border-slate-300';
+          actionBtnHtml = '<span class="text-xs font-bold text-slate-800 uppercase px-2.5 py-1 rounded-lg bg-slate-200 border border-slate-300">⚫ ĐÃ BỎ / THANH LÝ HOÀN TOÀN</span>';
+        } else if (st.code === 'ISOLATED_DISPOSAL') {
+          bannerBg = 'bg-rose-50 border-rose-300';
+          actionBtnHtml = '<span class="text-xs font-bold text-rose-700 uppercase px-2.5 py-1 rounded-lg bg-rose-100 border border-rose-200">Đã dán nhãn cách ly chờ thanh lý</span>';
+        } else if (st.code === 'OVERDUE') {
+          bannerBg = 'bg-rose-50 border-rose-200';
+          actionBtnHtml = `
+            <button type="button" onclick="checkAdminAction(() => openIsolateEquipmentModal('${eq.id}'))" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-amber-600 hover:bg-amber-500 text-white transition">
+              Dán nhãn cách ly
+            </button>
+          `;
+        } else if (st.code === 'WARNING_DUE') {
+          bannerBg = 'bg-amber-50 border-amber-200';
+        }
+
+        statusBanner.className = `p-3.5 rounded-xl border flex items-center justify-between flex-wrap gap-2 ${bannerBg}`;
         statusBanner.innerHTML = `
           <div class="flex items-center space-x-2.5">
             <span class="w-3 h-3 rounded-full ${st.dotClass} ${st.code === 'OVERDUE' ? 'animate-ping' : ''}"></span>
@@ -4644,9 +4900,27 @@ function updateAuthUI() {
             </div>
           </div>
           <div>
-            ${st.code === 'DISPOSED' ? '<span class="text-xs font-bold text-rose-700 uppercase">Đã dán nhãn cách ly</span>' : ''}
+            ${actionBtnHtml}
           </div>
         `;
+      }
+
+      // Cập nhật hiển thị các nút thao tác ở footer modal chi tiết
+      const btnIsolate = document.getElementById('btn-isolate-equipment-action');
+      const btnRestore = document.getElementById('btn-restore-equipment-action');
+      const btnDispose = document.getElementById('btn-dispose-equipment-action');
+      if (btnIsolate && btnRestore) {
+        if (st.groupCode === 'ISOLATED') {
+          btnIsolate.classList.add('hidden');
+          if (st.code === 'ISOLATED_REPAIR') {
+            btnRestore.classList.remove('hidden');
+          } else {
+            btnRestore.classList.add('hidden');
+          }
+        } else {
+          btnIsolate.classList.remove('hidden');
+          btnRestore.classList.add('hidden');
+        }
       }
 
       const events = eq.events || [];
@@ -4799,13 +5073,73 @@ function updateAuthUI() {
     function handleEventTypeChange() {
       const typeSelect = document.getElementById('event-type');
       const custodyBox = document.getElementById('event-custody-box');
-      if (!typeSelect || !custodyBox) return;
+      const isolationBox = document.getElementById('event-isolation-box');
+      const repairBox = document.getElementById('event-repair-box');
+      const disposeBox = document.getElementById('event-dispose-box');
+      if (!typeSelect) return;
 
-      if (typeSelect.value === 'Thay đổi người theo dõi/sử dụng') {
-        custodyBox.classList.remove('hidden');
-      } else {
-        custodyBox.classList.add('hidden');
+      const val = typeSelect.value;
+      if (custodyBox) {
+        if (val === 'Thay đổi người theo dõi/sử dụng') custodyBox.classList.remove('hidden');
+        else custodyBox.classList.add('hidden');
       }
+      if (isolationBox) {
+        if (val === 'Sự cố/ Cách ly') isolationBox.classList.remove('hidden');
+        else isolationBox.classList.add('hidden');
+      }
+      if (repairBox) {
+        if (val === 'Khắc phục sự cố / Đã sửa chữa xong') repairBox.classList.remove('hidden');
+        else repairBox.classList.add('hidden');
+      }
+      if (disposeBox) {
+        if (val === 'Thiết bị đã bỏ/thanh lý' || val === 'Loại bỏ / Thanh lý') disposeBox.classList.remove('hidden');
+        else disposeBox.classList.add('hidden');
+      }
+    }
+
+        function openIsolateEquipmentModal(eqId) {
+      const eq = appState.equipments.find(e => e.id === eqId);
+      if (!eq) return;
+      openAddEventModal(eqId);
+      const typeSelect = document.getElementById('event-type');
+      if (typeSelect) {
+        typeSelect.value = 'Sự cố/ Cách ly';
+        handleEventTypeChange();
+      }
+      const proposer = document.getElementById('event-isolation-proposer');
+      if (proposer) proposer.value = eq.manager || '';
+      const reason = document.getElementById('event-isolation-reason');
+      if (reason) setTimeout(() => reason.focus(), 200);
+    }
+
+    function openDisposeEquipmentModal(eqId) {
+      const eq = appState.equipments.find(e => e.id === eqId);
+      if (!eq) return;
+      openAddEventModal(eqId);
+      const typeSelect = document.getElementById('event-type');
+      if (typeSelect) {
+        typeSelect.value = 'Thiết bị đã bỏ/thanh lý';
+        handleEventTypeChange();
+      }
+      const decInput = document.getElementById('event-dispose-decision');
+      if (decInput) setTimeout(() => decInput.focus(), 200);
+    }
+
+    function openRestoreEquipmentModal(eqId) {
+      const eq = appState.equipments.find(e => e.id === eqId);
+      if (!eq) return;
+      openAddEventModal(eqId);
+      const typeSelect = document.getElementById('event-type');
+      if (typeSelect) {
+        typeSelect.value = 'Khắc phục sự cố / Đã sửa chữa xong';
+        handleEventTypeChange();
+      }
+      const repCat = document.getElementById('event-repair-category');
+      if (repCat && eq.previousCategory) {
+        repCat.value = eq.previousCategory;
+      }
+      const repPerf = document.getElementById('event-repair-performer');
+      if (repPerf) repPerf.value = 'Đơn vị bảo trì / kỹ thuật viên';
     }
 
     function openAddEventModal(eqId) {
@@ -4896,7 +5230,107 @@ function updateAuthUI() {
       const title = document.getElementById('event-title').value.trim();
       let details = document.getElementById('event-details').value.trim();
 
-      if (eventType === 'Thay đổi người theo dõi/sử dụng') {
+      if (eventType === 'Sự cố/ Cách ly') {
+        const isoType = document.getElementById('event-isolation-type') ? document.getElementById('event-isolation-type').value : 'REPAIR';
+        const isoProposer = document.getElementById('event-isolation-proposer') ? document.getElementById('event-isolation-proposer').value.trim() : (eq.manager || '');
+        const isoReason = document.getElementById('event-isolation-reason') ? document.getElementById('event-isolation-reason').value.trim() : '';
+        const isoMeasures = document.getElementById('event-isolation-measures') ? document.getElementById('event-isolation-measures').value.trim() : '';
+
+        // Lưu lại danh mục trước khi sự kiện hỏng/cách ly
+        if (eq.category !== '7' && eq.category !== 7) {
+          eq.previousCategory = String(eq.category || '1').trim();
+        }
+        eq.isIsolated = true;
+        eq.isolatedType = isoType; // 'REPAIR' hoặc 'DISPOSAL'
+        eq.category = '7'; // Chuyển vào danh mục 7: Chờ sửa/thanh lý
+        eq.status = isoType === 'REPAIR' ? 'ISOLATED_REPAIR' : 'ISOLATED_DISPOSAL';
+        eq.note = isoType === 'REPAIR' ? 'Sự cố - Cách ly chờ sửa chữa (Khoản 6.4.9 ISO 17025)' : 'Đã hỏng - Cách ly chờ thanh lý (Khoản 6.4.9 ISO 17025)';
+        eq.disposalInfo = {
+          date: eventDate,
+          reason: isoReason,
+          proposer: isoProposer,
+          measures: isoMeasures,
+          type: isoType
+        };
+
+        details = `SỰ CỐ & DÁN NHÃN CÁCH LY THIẾT BỊ (KHOẢN 6.4.9 ISO 17025):
+- Mục đích cách ly: ${isoType === 'REPAIR' ? 'Cách ly - Chờ sửa chữa' : 'Cách ly - Chờ thanh lý'}
+- Cán bộ phát hiện / Đề xuất: ${isoProposer || 'Phòng KN'}
+- Hiện tượng sự cố / Lý do: ${isoReason || 'Thiết bị gặp sự cố hư hỏng'}
+- Biện pháp cách ly & Dán nhãn: ${isoMeasures}
+${details ? `- Chi tiết bổ sung: ${details}` : ''}`;
+
+        if (!currentUploadedEventFile) {
+          attachments.push({
+            id: 'sticker-' + Date.now(),
+            name: isoType === 'REPAIR' ? 'Nhan_Cach_Ly_Cho_Sua_Chua.png' : 'Nhan_Cach_Ly_Cho_Thanh_Ly.png',
+            type: 'image/png',
+            data: SAMPLE_STICKER_B64
+          });
+        }
+      } else if (eventType === 'Khắc phục sự cố / Đã sửa chữa xong') {
+        const restoredCat = document.getElementById('event-repair-category') ? document.getElementById('event-repair-category').value : (eq.previousCategory || '1');
+        const repairPerf = document.getElementById('event-repair-performer') ? document.getElementById('event-repair-performer').value.trim() : (performer || 'Nội bộ');
+        const repairDtl = document.getElementById('event-repair-details') ? document.getElementById('event-repair-details').value.trim() : '';
+        const repairResult = document.getElementById('event-repair-result') ? document.getElementById('event-repair-result').value.trim() : '';
+
+        // Phục hồi thiết bị về danh mục ban đầu như trước khi sự kiện hỏng
+        eq.category = String(restoredCat).trim();
+        eq.isIsolated = false;
+        eq.isolatedType = null;
+        eq.isDisposed = false;
+        eq.status = 'OPERATIONAL';
+        eq.note = 'Đã khắc phục sự cố, đưa vào sử dụng lại bình thường';
+
+        details = `KHẮC PHỤC SỰ CỐ / ĐÃ SỬA CHỮA XONG - ĐƯA VÀO HOẠT ĐỘNG LẠI:
+- Phục hồi về danh mục: Nhóm ${restoredCat} (như trước khi sự kiện hỏng)
+- Đơn vị / Kỹ thuật viên sửa chữa: ${repairPerf}
+- Nội dung sửa chữa & Thay thế: ${repairDtl || 'Đã sửa chữa và khắc phục lỗi hoàn tất'}
+- Kết quả kiểm tra hoạt động: ${repairResult || 'Đạt yêu cầu kỹ thuật'}
+${details ? `- Chi tiết bổ sung: ${details}` : ''}`;
+      } else if (eventType === 'Thiết bị đã bỏ/thanh lý' || eventType === 'Loại bỏ / Thanh lý') {
+        const dispDecision = document.getElementById('event-dispose-decision') ? document.getElementById('event-dispose-decision').value.trim() : '';
+        const dispApprover = document.getElementById('event-dispose-approver') ? document.getElementById('event-dispose-approver').value.trim() : 'Hội đồng thanh lý';
+        const dispReason = document.getElementById('event-dispose-reason') ? document.getElementById('event-dispose-reason').value.trim() : '';
+        const dispMethod = document.getElementById('event-dispose-method') ? document.getElementById('event-dispose-method').value : 'Tiêu hủy / Bàn giao rác thải kỹ thuật';
+        const dispMeasures = document.getElementById('event-dispose-measures') ? document.getElementById('event-dispose-measures').value.trim() : '';
+
+        if (eq.category !== '7' && eq.category !== 7) {
+          eq.previousCategory = String(eq.category || '1').trim();
+        }
+        eq.category = '7';
+        eq.isIsolated = true;
+        eq.isolatedType = 'DISPOSAL';
+        eq.isDisposed = true;
+        eq.status = 'DISPOSED';
+        eq.note = 'Đã bỏ/thanh lý theo Khoản 6.4.9 ISO 17025';
+        eq.disposalInfo = {
+          date: eventDate,
+          reason: dispReason,
+          approver: dispApprover,
+          decision: dispDecision,
+          method: dispMethod,
+          measures: dispMeasures,
+          type: 'DISPOSED'
+        };
+
+        details = `THIẾT BỊ ĐÃ BỎ / THANH LÝ (KHOẢN 6.4.9 ISO 17025):
+- Căn cứ / Quyết định thanh lý số: ${dispDecision || 'Biên bản thanh lý tài sản'}
+- Người / Hội đồng phê duyệt: ${dispApprover}
+- Lý do thanh lý / loại bỏ hoàn toàn: ${dispReason || 'Hư hỏng không thể sửa chữa / Hết khấu hao'}
+- Hình thức xử lý sau thanh lý: ${dispMethod}
+- Biện pháp dán nhãn & niêm phong: ${dispMeasures}
+${details ? `- Chi tiết bổ sung: ${details}` : ''}`;
+
+        if (!currentUploadedEventFile) {
+          attachments.push({
+            id: 'sticker-disp-' + Date.now(),
+            name: 'Tem_Nhan_Thiet_Bi_Da_Thanh_Ly.png',
+            type: 'image/png',
+            data: SAMPLE_STICKER_B64
+          });
+        }
+      } else if (eventType === 'Thay đổi người theo dõi/sử dụng') {
         const oldManager = document.getElementById('event-custody-old-manager').value.trim();
         const newManager = document.getElementById('event-custody-new-manager').value.trim();
         const custodyDate = document.getElementById('event-custody-date').value || eventDate;
@@ -4992,7 +5426,18 @@ ${details ? `- Nội dung bổ sung: ${details}` : ''}`;
       }
 
       closeModal('modal-add-event');
-      showToast(eventType === 'Thay đổi người theo dõi/sử dụng' ? 'Đã ghi nhận sự kiện bàn giao & cập nhật người theo dõi mới!' : 'Đã lưu sự kiện vòng đời và cập nhật đồng bộ sang NĐ22 & TT20!', 'success');
+      let successMsg = 'Đã lưu sự kiện vòng đời và cập nhật đồng bộ sang NĐ22 & TT20!';
+      if (eventType === 'Thay đổi người theo dõi/sử dụng') {
+        successMsg = 'Đã ghi nhận sự kiện bàn giao & cập nhật người theo dõi mới!';
+      } else if (eventType === 'Sự cố/ Cách ly') {
+        successMsg = `Đã dán nhãn cách ly thiết bị ${eq.code} và đưa vào danh sách Chờ sửa/thanh lý!`;
+      } else if (eventType === 'Khắc phục sự cố / Đã sửa chữa xong') {
+        const catName = (EQUIPMENT_CATEGORIES[eq.category] && EQUIPMENT_CATEGORIES[eq.category].name) || `Nhóm ${eq.category}`;
+        successMsg = `Đã khắc phục sự cố thành công! Thiết bị ${eq.code} được đưa trở lại danh mục [${catName}].`;
+      } else if (eventType === 'Thiết bị đã bỏ/thanh lý' || eventType === 'Loại bỏ / Thanh lý') {
+        successMsg = `Đã hoàn tất ghi nhận sự kiện thiết bị ${eq.code} đã bỏ/thanh lý!`;
+      }
+      showToast(successMsg, 'success');
     }
 
     function openDisposeModal(eqId) {
@@ -5021,15 +5466,21 @@ ${details ? `- Nội dung bổ sung: ${details}` : ''}`;
       const approver = document.getElementById('dispose-approver').value.trim();
       const measures = document.getElementById('dispose-measures').value.trim();
 
+      if (eq.category !== '7' && eq.category !== 7) {
+        eq.previousCategory = String(eq.category || '1').trim();
+      }
       eq.category = '7';
-      eq.note = 'Đã hỏng - Đã cách ly theo Khoản 6.4.9 ISO 17025';
-      eq.status = 'DISPOSED';
+      eq.isIsolated = true;
+      eq.isolatedType = 'DISPOSAL';
+      eq.note = 'Đã hỏng - Cách ly chờ thanh lý theo Khoản 6.4.9 ISO 17025';
+      eq.status = 'ISOLATED_DISPOSAL';
       eq.disposalInfo = {
         date: date,
         reason: reason,
         proposer: proposer,
         approver: approver,
-        measures: measures
+        measures: measures,
+        type: 'DISPOSAL'
       };
 
       if (!eq.events) eq.events = [];
@@ -5369,7 +5820,7 @@ Lưu ý: Nếu thiết bị hỏng, khuyến nghị dùng chức năng "Loại b
       showToast(`Xuất file Excel nhật ký sự kiện của ${eq.code} thành công!`, 'success');
     }
 
-    function printEquipmentEvents(eqId) {
+        function printEquipmentEvents(eqId) {
       if (!eqId) return;
       const targetStr = String(eqId).trim().toUpperCase();
       const eq = appState.equipments.find(e => e.id === eqId || String(e.id) === String(eqId) || (e.code && String(e.code).trim().toUpperCase() === targetStr));
@@ -5387,70 +5838,228 @@ Lưu ý: Nếu thiết bị hỏng, khuyến nghị dùng chức năng "Loại b
 
       let rowsHtml = '';
       if (events.length === 0) {
-        rowsHtml = '<tr><td colspan="7" style="text-align:center; padding:15px; font-style:italic;">Chưa có sự kiện nào được ghi nhận cho thiết bị này.</td></tr>';
+        rowsHtml = '<tr><td colspan="8" style="text-align:center; padding:20px; font-style:italic; color:#64748b;">Chưa có sự kiện nào được ghi nhận cho thiết bị này.</td></tr>';
       } else {
         events.forEach((ev, idx) => {
+          const isDispose = (ev.type && (ev.type.includes('bỏ/thanh lý') || ev.type.includes('thanh lý') || ev.type.includes('Loại bỏ')));
+          const isIsolate = (ev.type && (ev.type.includes('Cách ly') || ev.type.includes('Sự cố')));
+          const isRestore = (ev.type && ev.type.includes('sửa chữa xong'));
+
+          let typeColor = '#0f172a';
+          if (isDispose) typeColor = '#b91c1c';
+          else if (isIsolate) typeColor = '#b45309';
+          else if (isRestore) typeColor = '#047857';
+
+          const attName = (ev.attachments && ev.attachments.length > 0) ? ev.attachments.map(a => escapeHtml(a.name || 'Hồ sơ')).join('; ') : '—';
+
           rowsHtml += `
-            <tr>
-              <td style="text-align:center; font-family:monospace;">${idx + 1}</td>
-              <td style="font-weight:bold;">${escapeHtml(ev.type || '')}</td>
-              <td style="text-align:center; font-family:monospace; white-space:nowrap;">${formatDateDisplay(ev.date)}</td>
-              <td style="text-align:center; font-family:monospace;">${escapeHtml(ev.certNo || '—')}</td>
-              <td>${escapeHtml(ev.performer || 'Nội bộ')}</td>
-              <td style="text-align:center; font-family:monospace; white-space:nowrap;">${formatDateDisplay(ev.nextDate)}</td>
-              <td style="white-space:pre-line;">${escapeHtml(ev.details || ev.title || '—')}</td>
+            <tr style="border-bottom: 1px solid #cbd5e1;">
+              <td style="text-align:center; font-family:monospace; font-weight:600; padding:6px 4px;">${idx + 1}</td>
+              <td style="text-align:center; font-family:monospace; white-space:nowrap; padding:6px 6px;">${formatDateDisplay(ev.date)}</td>
+              <td style="font-weight:700; color:${typeColor}; padding:6px 8px;">${escapeHtml(ev.type || '—')}</td>
+              <td style="text-align:center; font-family:monospace; font-weight:600; padding:6px 6px;">${escapeHtml(ev.certNo || '—')}</td>
+              <td style="padding:6px 8px; font-weight:500;">${escapeHtml(ev.performer || 'Nội bộ')}</td>
+              <td style="text-align:center; font-family:monospace; white-space:nowrap; padding:6px 6px; font-weight:600; color:#1d4ed8;">${formatDateDisplay(ev.nextDate)}</td>
+              <td style="white-space:pre-line; padding:6px 8px; line-height:1.45; text-align:justify;">${escapeHtml(ev.details || ev.title || '—')}</td>
+              <td style="padding:6px 6px; font-size:8pt; color:#475569;">${attName}</td>
             </tr>
           `;
         });
       }
+
+      const st = getEquipmentStatus(eq);
+      const printDateStr = new Date().toLocaleDateString('vi-VN');
 
       printWindow.document.write(`
         <!DOCTYPE html>
         <html lang="vi">
         <head>
           <meta charset="UTF-8">
-          <title>Nhật Ký Sự Kiện Vòng Đời - ${escapeHtml(eq.code)}</title>
+          <title>Nhật Ký Sự Kiện Vòng Đời Thiết Bị (Khổ Ngang) - ${escapeHtml(eq.code)}</title>
           <style>
-            body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif; font-size: 11pt; color: #111; margin: 15mm; }
-            .header { text-align: center; margin-bottom: 20px; }
-            .header h3 { margin: 0 0 4px 0; font-size: 11pt; text-transform: uppercase; font-weight: bold; }
-            .header h2 { margin: 0 0 6px 0; font-size: 12pt; text-transform: uppercase; font-weight: bold; color: #1e3a8a; }
-            .header h1 { margin: 12px 0 6px 0; font-size: 15pt; text-transform: uppercase; font-weight: 800; }
-            .meta-box { border: 1px solid #ccc; padding: 10px 14px; border-radius: 6px; margin-bottom: 18px; font-size: 10pt; line-height: 1.6; background: #f8fafc; }
-            table { width: 100%; border-collapse: collapse; font-size: 9.5pt; margin-top: 10px; }
-            th, td { border: 1px solid #333; padding: 6px 8px; vertical-align: top; }
-            th { background: #f1f5f9; font-weight: bold; text-align: center; }
-            .signature-block { display: flex; justify-content: space-around; margin-top: 40px; page-break-inside: avoid; text-align: center; font-size: 10pt; font-weight: bold; }
-            .sig-space { height: 60px; }
-            @page { size: A4 portrait; margin: 12mm; }
+            @page {
+              size: A4 landscape;
+              margin: 8mm 8mm 8mm 8mm;
+            }
+            *, *::before, *::after {
+              box-sizing: border-box;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+            body {
+              font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+              font-size: 9pt;
+              color: #0f172a;
+              margin: 0;
+              padding: 0;
+              background: #fff;
+              line-height: 1.35;
+            }
+            .header-table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-bottom: 8px;
+            }
+            .header-table td {
+              border: none;
+              padding: 2px;
+              vertical-align: top;
+            }
+            .title-main {
+              font-size: 13pt;
+              font-weight: 800;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin: 4px 0 2px 0;
+              text-align: center;
+              color: #0f172a;
+            }
+            .title-sub {
+              font-size: 8.5pt;
+              font-style: italic;
+              text-align: center;
+              color: #475569;
+              margin: 0 0 8px 0;
+            }
+            .meta-card {
+              border: 1.5px solid #64748b;
+              border-radius: 4px;
+              padding: 6px 10px;
+              margin-bottom: 8px;
+              background-color: #f8fafc;
+            }
+            .meta-grid {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            .meta-grid td {
+              border: none;
+              padding: 2.5px 5px;
+              font-size: 8.5pt;
+              vertical-align: middle;
+            }
+            .meta-lbl {
+              font-weight: bold;
+              color: #334155;
+              width: 15%;
+            }
+            .meta-val {
+              color: #0f172a;
+              width: 35%;
+            }
+            .data-table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 4px;
+              font-size: 8.5pt;
+            }
+            .data-table th, .data-table td {
+              border: 1px solid #475569;
+              padding: 4px 5px;
+              vertical-align: top;
+            }
+            .data-table th {
+              background-color: #e2e8f0;
+              font-weight: bold;
+              text-align: center;
+              color: #0f172a;
+            }
+            .sig-table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 18px;
+              page-break-inside: avoid;
+            }
+            .sig-table td {
+              border: none;
+              text-align: center;
+              width: 25%;
+              vertical-align: top;
+              padding: 4px;
+            }
+            .sig-title {
+              font-size: 8.5pt;
+              font-weight: bold;
+              text-transform: uppercase;
+              color: #0f172a;
+              margin-bottom: 4px;
+            }
+            .sig-note {
+              font-size: 7.5pt;
+              font-style: italic;
+              color: #64748b;
+              font-weight: normal;
+            }
+            .sig-space {
+              height: 48px;
+            }
+            .sig-name {
+              font-size: 8.5pt;
+              font-weight: bold;
+              color: #0f172a;
+            }
           </style>
         </head>
         <body>
-          <div class="header">
-            <h3>TRUNG TÂM CHẤT LƯỢNG, CHẾ BIẾN VÀ PHÁT TRIỂN THỊ TRƯỜNG VÙNG 1</h3>
-            <h2>PHÒNG KIỂM NGHIỆM HÓA HỌC (NAFIQPM - Center 1)</h2>
-            <h1>NHẬT KÝ SỰ KIỆN VÒNG ĐỜI & HỒ SƠ THIẾT BỊ</h1>
-            <p style="font-size: 10pt; font-style: italic; margin-top: 4px;">Theo dõi Điều khoản 6.4.13 Tiêu chuẩn ISO/IEC 17025:2017</p>
-          </div>
+          <!-- TOP HEADER TABLE -->
+          <table class="header-table">
+            <tr>
+              <td style="width: 50%; text-align: left;">
+                <div style="font-size: 8pt; font-weight: bold; text-transform: uppercase; color:#1e293b;">TRUNG TÂM CHẤT LƯỢNG, CHẾ BIẾN VÀ PHÁT TRIỂN THỊ TRƯỜNG VÙNG 1</div>
+                <div style="font-size: 8pt; font-weight: bold; text-transform: uppercase; color:#0369a1;">PHÒNG KIỂM NGHIỆM HÓA HỌC (NAFIQPM - CENTER 1)</div>
+              </td>
+              <td style="width: 50%; text-align: right;">
+                <div style="font-size: 8pt; font-weight: bold; color:#334155;">BIỂU MẪU QUẢN LÝ THIẾT BỊ ISO/IEC 17025:2017</div>
+                <div style="font-size: 7.5pt; font-style: italic; color:#64748b;">Khoản 6.4.13: Hồ sơ lý lịch & nhật ký sự kiện vòng đời | Ngày in: ${printDateStr}</div>
+              </td>
+            </tr>
+          </table>
 
-          <div class="meta-box">
-            <table style="border:none; margin:0;">
-              <tr style="border:none;"><td style="border:none; padding:2px; font-weight:bold; width:25%;">Mã hiệu quản lý:</td><td style="border:none; padding:2px; font-weight:bold; color:#1d4ed8; font-family:monospace;">${escapeHtml(eq.code)}</td><td style="border:none; padding:2px; font-weight:bold; width:20%;">Phân loại TB:</td><td style="border:none; padding:2px;">${escapeHtml(eq.category || '—')}</td></tr>
-              <tr style="border:none;"><td style="border:none; padding:2px; font-weight:bold;">Tên máy móc, thiết bị:</td><td style="border:none; padding:2px; font-weight:bold;">${escapeHtml(eq.name)}</td><td style="border:none; padding:2px; font-weight:bold;">Người theo dõi:</td><td style="border:none; padding:2px; font-weight:bold;">${escapeHtml(eq.manager || '—')}</td></tr>
-              <tr style="border:none;"><td style="border:none; padding:2px; font-weight:bold;">Model & Số máy:</td><td style="border:none; padding:2px;">${escapeHtml(eq.model || '—')} (S/N: ${escapeHtml(eq.serialNo || '—')})</td><td style="border:none; padding:2px; font-weight:bold;">Vị trí lắp đặt:</td><td style="border:none; padding:2px;">${escapeHtml(eq.location || 'Phòng KN Hóa học')}</td></tr>
+          <div class="title-main">NHẬT KÝ SỰ KIỆN VÒNG ĐỜI & HỒ SƠ QUẢN LÝ THIẾT BỊ (A4 NGANG)</div>
+          <div class="title-sub">Theo dõi toàn bộ quá trình: Tiếp nhận, Nghiệm thu, Hiệu chuẩn, Kiểm định, Bảo trì, Sự cố/Cách ly, Sửa chữa & Thanh lý</div>
+
+          <!-- COMPACT METADATA CARD (4 COLUMNS IN LANDSCAPE) -->
+          <div class="meta-card">
+            <table class="meta-grid">
+              <tr>
+                <td class="meta-lbl">Mã hiệu quản lý:</td>
+                <td class="meta-val" style="font-family:monospace; font-weight:bold; font-size:10.5pt; color:#0369a1;">${escapeHtml(eq.code)}</td>
+                <td class="meta-lbl">Phân loại thiết bị:</td>
+                <td class="meta-val"><strong style="color:#0f172a;">${escapeHtml(eq.category || '1')}</strong> (${escapeHtml((EQUIPMENT_CATEGORIES[eq.category] && EQUIPMENT_CATEGORIES[eq.category].label) || 'Thiết bị')})</td>
+              </tr>
+              <tr>
+                <td class="meta-lbl">Tên máy móc, thiết bị:</td>
+                <td class="meta-val"><strong style="font-size:9.5pt;">${escapeHtml(eq.name)}</strong></td>
+                <td class="meta-lbl">Model & Số máy:</td>
+                <td class="meta-val">Model: <strong>${escapeHtml(eq.model || '—')}</strong> | S/N: <strong style="font-family:monospace;">${escapeHtml(eq.serialNo || '—')}</strong></td>
+              </tr>
+              <tr>
+                <td class="meta-lbl">Nhà SX & Xuất xứ:</td>
+                <td class="meta-val">${escapeHtml(eq.manufacturer || '—')} (${escapeHtml(eq.originYear || '—')})</td>
+                <td class="meta-lbl">Người theo dõi / Phụ trách:</td>
+                <td class="meta-val"><strong style="color:#0f172a;">${escapeHtml(eq.manager || '—')}</strong></td>
+              </tr>
+              <tr>
+                <td class="meta-lbl">Vị trí lắp đặt:</td>
+                <td class="meta-val">${escapeHtml(eq.location || 'Phòng KN Hóa học')}</td>
+                <td class="meta-lbl">Tình trạng hiện tại:</td>
+                <td class="meta-val"><strong style="color:#0369a1;">${escapeHtml(st.label)}</strong> (${escapeHtml(st.desc)})</td>
+              </tr>
             </table>
           </div>
 
-          <table>
+          <!-- LANDSCAPE DATA TABLE -->
+          <table class="data-table">
             <thead>
               <tr>
-                <th style="width: 35px;">STT</th>
-                <th style="width: 130px;">Loại sự kiện</th>
-                <th style="width: 80px;">Ngày</th>
-                <th style="width: 120px;">Số GCN / Tem</th>
-                <th style="width: 120px;">Đơn vị / Người thực hiện</th>
-                <th style="width: 80px;">Hạn lần tới</th>
-                <th>Nội dung chi tiết / Kết quả đánh giá</th>
+                <th style="width: 32px;">STT</th>
+                <th style="width: 75px;">Ngày</th>
+                <th style="width: 140px;">Loại Sự Kiện</th>
+                <th style="width: 120px;">Số GCN / Tem / QĐ</th>
+                <th style="width: 125px;">Đơn Vị / Người Thực Hiện</th>
+                <th style="width: 80px;">Hạn Lần Tới</th>
+                <th>Nội Dung Chi Tiết & Kết Quả Đánh Giá</th>
+                <th style="width: 110px;">Hồ Sơ Đính Kèm</th>
               </tr>
             </thead>
             <tbody>
@@ -5458,19 +6067,36 @@ Lưu ý: Nếu thiết bị hỏng, khuyến nghị dùng chức năng "Loại b
             </tbody>
           </table>
 
-          <div class="signature-block">
-            <div>
-              <p>NGƯỜI THEO DÕI THIẾT BỊ</p>
-              <div class="sig-space"></div>
-              <p style="font-style: italic; font-weight: normal;">(Ký và ghi rõ họ tên)</p>
-              <p style="margin-top: 10px;">${escapeHtml(eq.manager || '')}</p>
-            </div>
-            <div>
-              <p>LÃNH ĐẠO PHÒNG KIỂM NGHIỆM</p>
-              <div class="sig-space"></div>
-              <p style="font-style: italic; font-weight: normal;">(Ký và ghi rõ họ tên)</p>
-            </div>
-          </div>
+          <!-- 4-COLUMN SIGNATURE BLOCK FOR LANDSCAPE A4 -->
+          <table class="sig-table">
+            <tr>
+              <td>
+                <div class="sig-title">NGƯỜI THEO DÕI THIẾT BỊ</div>
+                <div class="sig-note">(Ký và ghi rõ họ tên)</div>
+                <div class="sig-space"></div>
+                <div class="sig-name">${escapeHtml(eq.manager || '')}</div>
+              </td>
+              <td>
+                <div class="sig-title">CÁN BỘ BẢO TRÌ / THỰC HIỆN</div>
+                <div class="sig-note">(Ký và ghi rõ họ tên)</div>
+                <div class="sig-space"></div>
+                <div class="sig-name">&nbsp;</div>
+              </td>
+              <td>
+                <div class="sig-title">PHỤ TRÁCH PHÒNG THỬ NGHIỆM</div>
+                <div class="sig-note">(Ký và ghi rõ họ tên)</div>
+                <div class="sig-space"></div>
+                <div class="sig-name">&nbsp;</div>
+              </td>
+              <td>
+                <div class="sig-title">GIÁM ĐỐC TRUNG TÂM PHÊ DUYỆT</div>
+                <div class="sig-note">(Ký, đóng dấu và ghi rõ họ tên)</div>
+                <div class="sig-space"></div>
+                <div class="sig-name">&nbsp;</div>
+              </td>
+            </tr>
+          </table>
+
           <img src="x" onerror="window.print()" style="display:none;" />
         </body>
         </html>
@@ -6195,24 +6821,33 @@ Lưu ý: Nếu thiết bị hỏng, khuyến nghị dùng chức năng "Loại b
 function doGet(e) {
   var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : 'GET_ALL';
   var ss = SpreadsheetApp.getActiveSpreadsheet();
+
   if (action === 'GET_ACCOUNTS') {
     return ContentService.createTextOutput(JSON.stringify({ status: 'success', accounts: getAccountsFromSheet(ss) })).setMimeType(ContentService.MimeType.JSON);
   } else if (action === 'GET_EQUIPMENTS') {
     return ContentService.createTextOutput(JSON.stringify({ status: 'success', equipments: getEquipmentsFromSheet(ss) })).setMimeType(ContentService.MimeType.JSON);
+  } else if (action === 'GET_PLAN') {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success', plan: getPlanFromSheet(ss) })).setMimeType(ContentService.MimeType.JSON);
+  } else if (action === 'GET_EVENTS') {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success', events: getEventsFromSheet(ss) })).setMimeType(ContentService.MimeType.JSON);
   } else if (action === 'GET_ND22') {
     return ContentService.createTextOutput(JSON.stringify({ status: 'success', nd22: getNd22FromSheet(ss) })).setMimeType(ContentService.MimeType.JSON);
   } else if (action === 'GET_TT20') {
     return ContentService.createTextOutput(JSON.stringify({ status: 'success', tt20: getTt20FromSheet(ss) })).setMimeType(ContentService.MimeType.JSON);
   } else {
+    // GET_ALL: Đồng bộ toàn bộ các sheet: DM_Chung, KeHoach_Nam, NhatKy_SuKien, DM_ND22, DM_TT20, TaiKhoan
     return ContentService.createTextOutput(JSON.stringify({
       status: 'success',
       equipments: getEquipmentsFromSheet(ss),
+      plan: getPlanFromSheet(ss),
+      events: getEventsFromSheet(ss),
       accounts: getAccountsFromSheet(ss),
       nd22: getNd22FromSheet(ss),
       tt20: getTt20FromSheet(ss)
     })).setMimeType(ContentService.MimeType.JSON);
   }
 }
+
 function doPost(e) {
   var lock = LockService.getScriptLock();
   lock.tryLock(30000);
@@ -6221,12 +6856,19 @@ function doPost(e) {
     var data = JSON.parse(raw);
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var action = data.action || 'EXPORT_ALL';
+
     if (action === 'EXPORT_ALL' || action === 'EXPORT_EQUIPMENTS' || action === 'AUTO_SYNC') {
       if (data.equipments && Array.isArray(data.equipments)) {
         saveEquipmentsToSheet(ss, data.equipments);
-        savePlanToSheet(ss, data.equipments);
-        saveEventsToSheet(ss, data.equipments);
+        savePlanToSheet(ss, data.equipments, data.plan);
+        saveEventsToSheet(ss, data.equipments, data.events);
       }
+    }
+    if (action === 'EXPORT_ALL' || action === 'EXPORT_PLAN') {
+      if (data.plan && Array.isArray(data.plan)) savePlanToSheet(ss, data.equipments || [], data.plan);
+    }
+    if (action === 'EXPORT_ALL' || action === 'EXPORT_EVENTS') {
+      if (data.events && Array.isArray(data.events)) saveEventsToSheet(ss, data.equipments || [], data.events);
     }
     if (action === 'EXPORT_ALL' || action === 'EXPORT_ACCOUNTS') {
       if (data.accounts && Array.isArray(data.accounts)) saveAccountsToSheet(ss, data.accounts);
@@ -6237,77 +6879,69 @@ function doPost(e) {
     if (action === 'EXPORT_ALL' || action === 'EXPORT_TT20') {
       if (data.tt20 && Array.isArray(data.tt20)) saveTt20ToSheet(ss, data.tt20);
     }
-    return ContentService.createTextOutput(JSON.stringify({ status: 'success', message: 'Lưu toàn bộ dữ liệu (DM_Chung, KeHoach_Nam, DM_ND22, DM_TT20, NhatKy_SuKien, TaiKhoan) thành công!' })).setMimeType(ContentService.MimeType.JSON);
+
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'success',
+      message: 'Lưu toàn bộ dữ liệu (DM_Chung, KeHoach_Nam, NhatKy_SuKien, DM_ND22, DM_TT20, TaiKhoan) thành công!'
+    })).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.toString() })).setMimeType(ContentService.MimeType.JSON);
   } finally {
     lock.releaseLock();
   }
 }
-function savePlanToSheet(ss, list) {
-  var sheet = ss.getSheetByName('KeHoach_Nam') || ss.insertSheet('KeHoach_Nam');
-  sheet.clear();
-  var headers = ['STT', 'Mã hiệu', 'Tên máy móc, thiết bị', 'Model', 'Số máy (S/N)', 'Hạng mục thực hiện', 'Chu kỳ', 'Năm kế hoạch', 'Thời gian đề xuất', 'Đơn vị thực hiện', 'Người theo dõi'];
-  sheet.appendRow(headers);
-  sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold').setBackground('#b45309').setFontColor('#ffffff');
-  if (!list || list.length === 0) return;
-  var rows = [];
-  var idx = 1;
-  list.forEach(function(eq) {
-    if (eq.category === '7' || eq.category === '0') return;
-    var nextDate = eq.nextCalibMaintDate;
-    if (!nextDate || nextDate === '1899-12-31' || nextDate === '1900-12-31' || nextDate === '-') return;
-    var d = new Date(nextDate);
-    if (isNaN(d.getTime())) return;
-    rows.push([
-      idx++, eq.code || '', eq.name || '', eq.model || '', eq.serialNo || '',
-      (eq.category === '1' || eq.category === '2') ? 'Hiệu chuẩn & Kiểm định' : 'Bảo trì định kỳ',
-      eq.calibCycle ? (eq.calibCycle + ' năm/lần') : (eq.maintCycle ? (eq.maintCycle + ' tháng/lần') : '12 tháng/lần'),
-      d.getFullYear(),
-      'Tháng ' + (d.getMonth() + 1) + ' / ' + d.getFullYear(),
-      eq.performer || 'Trung tâm kiểm định',
-      eq.manager || ''
-    ]);
-  });
-  if (rows.length > 0) sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
-  sheet.autoResizeColumns(1, headers.length);
-}
-function saveEventsToSheet(ss, list) {
-  var sheet = ss.getSheetByName('NhatKy_SuKien') || ss.insertSheet('NhatKy_SuKien');
-  sheet.clear();
-  var headers = ['STT', 'Mã TB', 'Tên thiết bị', 'Loại sự kiện', 'Ngày thực hiện', 'Người/Đơn vị thực hiện', 'Tiêu đề sự kiện', 'Chi tiết nội dung / Đánh giá', 'Số lượng tài liệu đính kèm'];
-  sheet.appendRow(headers);
-  sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold').setBackground('#0284c7').setFontColor('#ffffff');
-  if (!list || list.length === 0) return;
-  var rows = [];
-  var evIdx = 1;
-  list.forEach(function(eq) {
-    if (eq.events && eq.events.length > 0) {
-      eq.events.forEach(function(ev) {
-        rows.push([
-          evIdx++, eq.code || '', eq.name || '', ev.type || '', ev.date || '',
-          ev.performer || '', ev.title || '', ev.details || '', (ev.attachments && ev.attachments.length) || 0
-        ]);
-      });
+
+function findColIndex(headers, keywords) {
+  for (var k = 0; k < keywords.length; k++) {
+    var kw = keywords[k].toLowerCase();
+    for (var h = 0; h < headers.length; h++) {
+      if (headers[h].indexOf(kw) !== -1) return h;
     }
-  });
-  if (rows.length > 0) sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
-  sheet.autoResizeColumns(1, headers.length);
+  }
+  return -1;
 }
+
+function formatDateCell(val) {
+  if (val === null || val === undefined || val === '') return '';
+  if (val instanceof Date) {
+    return Utilities.formatDate(val, Session.getScriptTimeZone() || 'GMT+7', 'yyyy-MM-dd');
+  }
+  var str = String(val).trim();
+  if (str === '00:00:00' || str === '-' || str === '0') return '';
+  var dmy = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+  if (dmy) {
+    return dmy[3] + '-' + ('0' + dmy[2]).slice(-2) + '-' + ('0' + dmy[1]).slice(-2);
+  }
+  var ymd = str.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+  if (ymd) {
+    return ymd[1] + '-' + ('0' + ymd[2]).slice(-2) + '-' + ('0' + ymd[3]).slice(-2);
+  }
+  return str;
+}
+
+// 1. SHEET DM_Chung
 function saveEquipmentsToSheet(ss, list) {
   var sheet = ss.getSheetByName('DM_Chung') || ss.insertSheet('DM_Chung');
   sheet.clear();
-  var headers = ['TT', 'Tên thiết bị', 'Đặc tính kỹ thuật', 'Tên đầy đủ', 'Mã hiệu', 'Nhà sản xuất', 'Ngày nhận', 'Ngày vận hành', 'Năm/nước SX', 'CK kiểm tra (tháng)', 'CK hiệu chuẩn (năm)', 'CK bảo trì (tháng)', 'Người theo dõi', 'Thông số HC/KD/KT', 'Thông số bảo trì', 'Model', 'Số máy (Serial)', 'Nhà cung cấp', 'Tình trạng khi nhận', 'Vị trí lắp đặt', 'Phân loại TB', 'Ngày nhận theo dõi', 'Ngày HC/BT gần nhất', 'Đơn vị thực hiện', 'Ngày HC/BT lần tới', 'Trạng thái ISO', 'Ghi chú', 'Nhật ký sự kiện (JSON)'];
+  var headers = [
+    'TT', 'Tên thiết bị', 'Đặc tính kỹ thuật chính', 'Tên máy móc, thiết bị, dụng cụ, kiểu loại, thông số kỹ thuật chính',
+    'Mã hiệu', 'Nhà sản xuất', 'Ngày nhận', 'Ngày vận hành', 'Năm sản xuất, nước sản xuất',
+    'Chu kỳ kiểm tra (tháng)', 'Chu kỳ hiệu chuẩn (năm)', 'Chu kỳ bảo trì (tháng)', 'Người theo dõi',
+    'Thông số hiệu chuẩn/ Kiểm định/ Kiểm tra', 'Thông số bảo trì', 'Model', 'Số máy (Serial)', 'Nhà cung cấp',
+    'Tình trạng khi nhận', 'Vị trí lắp đặt', 'Phân loại TB', 'Ngày nhận theo dõi thiết bị',
+    'Ngày hiệu chuẩn/ bảo trì', 'Đơn vị thực hiện', 'Ngày hiệu chuẩn/ bảo trì lần tới', 'Trạng thái ISO', 'Ghi chú', 'Nhật ký sự kiện (JSON)'
+  ];
   sheet.appendRow(headers);
   sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold').setBackground('#1e293b').setFontColor('#ffffff');
   if (!list || list.length === 0) return;
+
   var rows = list.map(function(eq, idx) {
     return [
       idx + 1, eq.name || '', eq.specs || '', eq.fullName || '', eq.code || '',
       eq.manufacturer || '', eq.receiveDate || '', eq.operateDate || '', eq.originYear || '',
       eq.checkCycle || '', eq.calibCycle || '', eq.maintCycle || '', eq.manager || '',
       eq.calibParams || '', eq.maintParams || '', eq.model || '', eq.serialNo || '',
-      eq.supplier || '', eq.receiveStatus || '', eq.location || '', eq.category || '',
+      eq.supplier || '', eq.receiveStatus || '', eq.location || '', eq.category || '1',
       eq.trackingDate || '', eq.lastCalibMaintDate || '', eq.performer || '',
       eq.nextCalibMaintDate || '', eq.status || '', eq.note || '', JSON.stringify(eq.events || [])
     ];
@@ -6315,50 +6949,282 @@ function saveEquipmentsToSheet(ss, list) {
   sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
   sheet.autoResizeColumns(1, 10);
 }
+
 function getEquipmentsFromSheet(ss) {
-  var sheet = ss.getSheetByName('DM_Chung');
+  var sheet = ss.getSheetByName('DM_Chung') || ss.getSheetByName('DM Chung') || ss.getSheetByName('DMTB') || ss.getSheetByName('Danh mục chung') || ss.getSheetByName('DM_TB');
+  if (!sheet) {
+    var sheets = ss.getSheets();
+    for (var s = 0; s < sheets.length; s++) {
+      var sName = sheets[s].getName().trim().toLowerCase();
+      if (!sName.includes('kehoach') && !sName.includes('nhatky') && !sName.includes('nd22') && !sName.includes('tt20') && !sName.includes('taikhoan')) {
+        sheet = sheets[s];
+        break;
+      }
+    }
+  }
+  if (!sheet) sheet = ss.getSheets()[0];
   if (!sheet) return [];
+
   var data = sheet.getDataRange().getValues();
   if (data.length <= 1) return [];
+
+  var headers = data[0].map(function(h) { return String(h || '').trim().toLowerCase(); });
+  var colTT = findColIndex(headers, ['tt', 'stt']);
+  var colName = findColIndex(headers, ['tên thiết bị', 'tên tb']);
+  var colSpecs = findColIndex(headers, ['đặc tính kỹ thuật chính', 'đặc tính kỹ thuật', 'thông số kỹ thuật']);
+  var colFullName = findColIndex(headers, ['tên máy móc', 'tên đầy đủ', 'kiểu loại']);
+  var colCode = findColIndex(headers, ['mã hiệu', 'mã số tb', 'mã tb', 'mã']);
+  var colManufacturer = findColIndex(headers, ['nhà sản xuất', 'hãng sản xuất']);
+  var colReceiveDate = findColIndex(headers, ['ngày nhận']);
+  var colOperateDate = findColIndex(headers, ['ngày vận hành', 'ngày đưa vào']);
+  var colOriginYear = findColIndex(headers, ['năm sản xuất, nước sản xuất', 'năm/nước sx', 'nước sản xuất', 'xuất xứ']);
+  var colCheckCycle = findColIndex(headers, ['chu kỳ kiểm tra', 'ck kiểm tra']);
+  var colCalibCycle = findColIndex(headers, ['chu kỳ hiệu chuẩn', 'ck hiệu chuẩn']);
+  var colMaintCycle = findColIndex(headers, ['chu kỳ bảo trì', 'ck bảo trì']);
+  var colManager = findColIndex(headers, ['người theo dõi', 'cán bộ phụ trách', 'người quản lý']);
+  var colCalibParams = findColIndex(headers, ['thông số hiệu chuẩn', 'thông số hc/kd/kt']);
+  var colMaintParams = findColIndex(headers, ['thông số bảo trì', 'thông số bt']);
+  var colModel = findColIndex(headers, ['model']);
+  var colSerialNo = findColIndex(headers, ['số máy', 'serial', 'số seri', 's/n']);
+  var colSupplier = findColIndex(headers, ['nhà cung cấp', 'đơn vị cung cấp']);
+  var colReceiveStatus = findColIndex(headers, ['tình trạng khi nhận']);
+  var colLocation = findColIndex(headers, ['vị trí lắp đặt', 'vị trí']);
+  var colCategory = findColIndex(headers, ['phân loại tb', 'phân loại', 'nhóm']);
+  var colTrackingDate = findColIndex(headers, ['ngày nhận theo dõi']);
+  var colLastDate = findColIndex(headers, ['ngày hiệu chuẩn/ bảo trì', 'ngày hc/bt gần nhất', 'ngày gần nhất', 'gần nhất']);
+  var colPerformer = findColIndex(headers, ['đơn vị thực hiện', 'tổ chức thực hiện']);
+  var colNextDate = findColIndex(headers, ['ngày hiệu chuẩn/ bảo trì lần tới', 'ngày hc/bt lần tới', 'lần tới']);
+  var colStatus = findColIndex(headers, ['trạng thái iso', 'trạng thái', 'tình trạng']);
+  var colNote = findColIndex(headers, ['ghi chú']);
+  var colEventsJson = findColIndex(headers, ['nhật ký sự kiện (json)', 'nhật ký sự kiện', 'events']);
+  var colDossier = findColIndex(headers, ['đường dẫn hồ sơ', 'hồ sơ máy', 'catalogue', 'hdsd', 'url', 'link']);
+
   var list = [];
   for (var i = 1; i < data.length; i++) {
     var r = data[i];
+    var code = colCode !== -1 ? String(r[colCode] || '').trim() : '';
+    var name = colName !== -1 ? String(r[colName] || '').trim() : '';
+    if (!code && !name) continue;
+
+    var cleanCode = code || ('HH-' + i);
     var events = [];
-    try { if (r[27]) events = JSON.parse(r[27]); } catch(e) {}
+    if (colEventsJson !== -1 && r[colEventsJson]) {
+      try { events = JSON.parse(r[colEventsJson]); } catch(e) {}
+    }
+
+    var catRaw = colCategory !== -1 ? String(r[colCategory] || '1').trim() : '1';
+    var catDigit = catRaw.match(/[0-7]/);
+    var cat = catDigit ? catDigit[0] : '1';
+
     list.push({
       id: 'eq_' + i,
-      TT: r[0],
-      name: r[1],
-      specs: r[2],
-      fullName: r[3],
-      code: r[4],
-      manufacturer: r[5],
-      receiveDate: r[6],
-      operateDate: r[7],
-      originYear: r[8],
-      checkCycle: r[9],
-      calibCycle: r[10],
-      maintCycle: r[11],
-      manager: r[12],
-      calibParams: r[13],
-      maintParams: r[14],
-      model: r[15],
-      serialNo: r[16],
-      supplier: r[17],
-      receiveStatus: r[18],
-      location: r[19],
-      category: String(r[20] || '1'),
-      trackingDate: r[21],
-      lastCalibMaintDate: r[22],
-      performer: r[23],
-      nextCalibMaintDate: r[24],
-      status: r[25] || 'OPERATIONAL',
-      note: r[26] || '',
+      TT: colTT !== -1 && r[colTT] ? r[colTT] : i,
+      name: name,
+      specs: colSpecs !== -1 ? String(r[colSpecs] || '').trim() : '',
+      fullName: colFullName !== -1 ? String(r[colFullName] || '').trim() : name,
+      code: cleanCode,
+      manufacturer: colManufacturer !== -1 ? String(r[colManufacturer] || '').trim() : '',
+      receiveDate: colReceiveDate !== -1 ? formatDateCell(r[colReceiveDate]) : '',
+      operateDate: colOperateDate !== -1 ? formatDateCell(r[colOperateDate]) : '',
+      originYear: colOriginYear !== -1 ? String(r[colOriginYear] || '').trim() : '',
+      checkCycle: colCheckCycle !== -1 ? String(r[colCheckCycle] || '').trim() : '',
+      calibCycle: colCalibCycle !== -1 ? String(r[colCalibCycle] || '').trim() : '',
+      maintCycle: colMaintCycle !== -1 ? String(r[colMaintCycle] || '').trim() : '',
+      manager: colManager !== -1 ? String(r[colManager] || '').trim() : '',
+      calibParams: colCalibParams !== -1 ? String(r[colCalibParams] || '').trim() : '',
+      maintParams: colMaintParams !== -1 ? String(r[colMaintParams] || '').trim() : '',
+      model: colModel !== -1 ? String(r[colModel] || '').trim() : '',
+      serialNo: colSerialNo !== -1 ? String(r[colSerialNo] || '').trim() : '',
+      supplier: colSupplier !== -1 ? String(r[colSupplier] || '').trim() : '',
+      receiveStatus: colReceiveStatus !== -1 ? String(r[colReceiveStatus] || '').trim() : 'Mới (nguyên đai/kiện)',
+      location: colLocation !== -1 ? String(r[colLocation] || '').trim() : 'Phòng KN Hóa học',
+      category: cat,
+      trackingDate: colTrackingDate !== -1 ? formatDateCell(r[colTrackingDate]) : '',
+      lastCalibMaintDate: colLastDate !== -1 ? formatDateCell(r[colLastDate]) : '',
+      performer: colPerformer !== -1 ? String(r[colPerformer] || '').trim() : '',
+      nextCalibMaintDate: colNextDate !== -1 ? formatDateCell(r[colNextDate]) : '',
+      status: colStatus !== -1 && r[colStatus] ? String(r[colStatus]).trim() : 'OPERATIONAL',
+      note: colNote !== -1 ? String(r[colNote] || '').trim() : '',
+      dossierUrl: colDossier !== -1 ? String(r[colDossier] || '').trim() : '',
       events: events
     });
   }
   return list;
 }
+
+// 2. SHEET KeHoach_Nam
+function savePlanToSheet(ss, list, customPlan) {
+  var sheet = ss.getSheetByName('KeHoach_Nam') || ss.insertSheet('KeHoach_Nam');
+  sheet.clear();
+  var headers = ['STT', 'Mã hiệu', 'Tên máy móc, thiết bị', 'Model', 'Số máy (S/N)', 'Hạng mục thực hiện', 'Chu kỳ', 'Năm kế hoạch', 'Thời gian đề xuất', 'Đơn vị thực hiện', 'Người theo dõi', 'Ghi chú'];
+  sheet.appendRow(headers);
+  sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold').setBackground('#b45309').setFontColor('#ffffff');
+
+  var rows = [];
+  var idx = 1;
+  if (customPlan && Array.isArray(customPlan) && customPlan.length > 0) {
+    customPlan.forEach(function(item) {
+      rows.push([
+        idx++, item.code || '', item.name || '', item.model || '', item.serialNo || '',
+        item.workType || 'Hiệu chuẩn & Kiểm định', item.cycle || '', item.year || 2027,
+        item.proposedTime || item.dateStr || '', item.performer || '', item.manager || '', item.note || ''
+      ]);
+    });
+  } else if (list && list.length > 0) {
+    list.forEach(function(eq) {
+      if (eq.category === '7' || eq.category === '0' || eq.isIsolated) return;
+      var nextDate = eq.nextCalibMaintDate;
+      if (!nextDate || nextDate === '1899-12-31' || nextDate === '1900-12-31' || nextDate === '-') return;
+      var d = new Date(nextDate);
+      if (isNaN(d.getTime())) return;
+      rows.push([
+        idx++, eq.code || '', eq.name || '', eq.model || '', eq.serialNo || '',
+        (eq.category === '1' || eq.category === '2') ? 'Hiệu chuẩn & Kiểm định' : 'Bảo trì định kỳ',
+        eq.calibCycle ? (eq.calibCycle + ' năm/lần') : (eq.maintCycle ? (eq.maintCycle + ' tháng/lần') : '12 tháng/lần'),
+        d.getFullYear(),
+        'Tháng ' + (d.getMonth() + 1) + ' / ' + d.getFullYear(),
+        eq.performer || 'Trung tâm kiểm định',
+        eq.manager || '',
+        ''
+      ]);
+    });
+  }
+  if (rows.length > 0) sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
+  sheet.autoResizeColumns(1, headers.length);
+}
+
+function getPlanFromSheet(ss) {
+  var sheet = ss.getSheetByName('KeHoach_Nam') || ss.getSheetByName('Ke Hoach Nam') || ss.getSheetByName('Kế hoạch năm') || ss.getSheetByName('KeHoach');
+  if (!sheet) return [];
+  var data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return [];
+
+  var headers = data[0].map(function(h) { return String(h || '').trim().toLowerCase(); });
+  var colStt = findColIndex(headers, ['stt', 'tt']);
+  var colCode = findColIndex(headers, ['mã hiệu', 'mã tb', 'mã số', 'mã']);
+  var colName = findColIndex(headers, ['tên máy móc', 'tên thiết bị', 'tên tb']);
+  var colModel = findColIndex(headers, ['model']);
+  var colSerial = findColIndex(headers, ['số máy', 'serial', 's/n', 'số seri']);
+  var colWork = findColIndex(headers, ['hạng mục', 'nội dung']);
+  var colCycle = findColIndex(headers, ['chu kỳ', 'ck']);
+  var colYear = findColIndex(headers, ['năm kế hoạch', 'năm']);
+  var colTime = findColIndex(headers, ['thời gian đề xuất', 'thời gian', 'dự kiến']);
+  var colPerf = findColIndex(headers, ['đơn vị thực hiện', 'đơn vị']);
+  var colMgr = findColIndex(headers, ['người theo dõi', 'người quản lý', 'phụ trách']);
+
+  var list = [];
+  for (var i = 1; i < data.length; i++) {
+    var r = data[i];
+    var code = colCode !== -1 ? String(r[colCode] || '').trim() : '';
+    var name = colName !== -1 ? String(r[colName] || '').trim() : '';
+    if (!code && !name) continue;
+    list.push({
+      stt: colStt !== -1 && r[colStt] ? r[colStt] : i,
+      code: code,
+      name: name,
+      model: colModel !== -1 ? String(r[colModel] || '').trim() : '',
+      serialNo: colSerial !== -1 ? String(r[colSerial] || '').trim() : '',
+      workType: colWork !== -1 ? String(r[colWork] || '').trim() : 'Hiệu chuẩn & Kiểm định',
+      cycle: colCycle !== -1 ? String(r[colCycle] || '').trim() : '',
+      year: colYear !== -1 ? Number(r[colYear]) || 2027 : 2027,
+      proposedTime: colTime !== -1 ? formatDateCell(r[colTime]) : '',
+      performer: colPerf !== -1 ? String(r[colPerf] || '').trim() : '',
+      manager: colMgr !== -1 ? String(r[colMgr] || '').trim() : ''
+    });
+  }
+  return list;
+}
+
+// 3. SHEET NhatKy_SuKien
+function saveEventsToSheet(ss, list, customEvents) {
+  var sheet = ss.getSheetByName('NhatKy_SuKien') || ss.insertSheet('NhatKy_SuKien');
+  sheet.clear();
+  var headers = ['STT', 'Mã TB', 'Tên thiết bị', 'Loại sự kiện', 'Ngày thực hiện', 'Số GCN / Tem KĐ-HC', 'Người/Đơn vị thực hiện', 'Hạn lần tới', 'Tiêu đề sự kiện', 'Chi tiết nội dung / Đánh giá', 'Số lượng tài liệu đính kèm', 'Link tài liệu'];
+  sheet.appendRow(headers);
+  sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold').setBackground('#0284c7').setFontColor('#ffffff');
+
+  var rows = [];
+  var evIdx = 1;
+  if (customEvents && Array.isArray(customEvents) && customEvents.length > 0) {
+    customEvents.forEach(function(ev) {
+      rows.push([
+        evIdx++, ev.code || '', ev.name || '', ev.type || '', ev.date || '',
+        ev.certNo || '', ev.performer || '', ev.nextDate || '', ev.title || '',
+        ev.details || '', ev.attachmentsCount || (ev.attachments ? ev.attachments.length : 0), ev.dossierUrl || ev.url || ''
+      ]);
+    });
+  } else if (list && list.length > 0) {
+    list.forEach(function(eq) {
+      if (eq.events && eq.events.length > 0) {
+        eq.events.forEach(function(ev) {
+          var link = (ev.attachments && ev.attachments[0] && (ev.attachments[0].url || ev.attachments[0].data)) || '';
+          rows.push([
+            evIdx++, eq.code || '', eq.name || '', ev.type || '', ev.date || '',
+            ev.certNo || '', ev.performer || '', ev.nextDate || '', ev.title || '',
+            ev.details || '', (ev.attachments && ev.attachments.length) || 0, link
+          ]);
+        });
+      }
+    });
+  }
+  if (rows.length > 0) sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
+  sheet.autoResizeColumns(1, headers.length);
+}
+
+function getEventsFromSheet(ss) {
+  var sheet = ss.getSheetByName('NhatKy_SuKien') || ss.getSheetByName('Nhat Ky Su Kien') || ss.getSheetByName('Nhật ký sự kiện') || ss.getSheetByName('NhatKy');
+  if (!sheet) return [];
+  var data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return [];
+
+  var headers = data[0].map(function(h) { return String(h || '').trim().toLowerCase(); });
+  var colStt = findColIndex(headers, ['stt', 'tt']);
+  var colCode = findColIndex(headers, ['mã tb', 'mã hiệu', 'mã số', 'mã']);
+  var colName = findColIndex(headers, ['tên thiết bị', 'tên máy móc', 'tên tb']);
+  var colType = findColIndex(headers, ['loại sự kiện', 'loại']);
+  var colDate = findColIndex(headers, ['ngày thực hiện', 'ngày']);
+  var colCert = findColIndex(headers, ['số gcn', 'gcn', 'số tem', 'tem']);
+  var colPerf = findColIndex(headers, ['người/đơn vị', 'đơn vị thực hiện', 'người thực hiện', 'đơn vị', 'người']);
+  var colNext = findColIndex(headers, ['hạn lần tới', 'lần tới']);
+  var colTitle = findColIndex(headers, ['tiêu đề sự kiện', 'tiêu đề']);
+  var colDetails = findColIndex(headers, ['chi tiết nội dung', 'chi tiết', 'nội dung', 'đánh giá']);
+  var colLink = findColIndex(headers, ['link tài liệu', 'link', 'url']);
+
+  var list = [];
+  for (var i = 1; i < data.length; i++) {
+    var r = data[i];
+    var code = colCode !== -1 ? String(r[colCode] || '').trim() : '';
+    if (!code) continue;
+    var attachments = [];
+    var linkVal = colLink !== -1 ? String(r[colLink] || '').trim() : '';
+    if (linkVal) {
+      attachments.push({
+        id: 'link_' + i,
+        name: 'Hồ sơ đính kèm',
+        type: 'url',
+        data: linkVal,
+        url: linkVal
+      });
+    }
+    list.push({
+      id: 'evt_sheet_' + i,
+      stt: colStt !== -1 && r[colStt] ? r[colStt] : i,
+      code: code,
+      name: colName !== -1 ? String(r[colName] || '').trim() : '',
+      type: colType !== -1 ? String(r[colType] || 'Hiệu chuẩn / Kiểm định').trim() : 'Hiệu chuẩn / Kiểm định',
+      date: colDate !== -1 ? formatDateCell(r[colDate]) : '',
+      certNo: colCert !== -1 ? String(r[colCert] || '').trim() : '',
+      performer: colPerf !== -1 ? String(r[colPerf] || 'Nội bộ').trim() : 'Nội bộ',
+      nextDate: colNext !== -1 ? formatDateCell(r[colNext]) : '',
+      title: colTitle !== -1 ? String(r[colTitle] || '').trim() : '',
+      details: colDetails !== -1 ? String(r[colDetails] || '').trim() : '',
+      attachments: attachments
+    });
+  }
+  return list;
+}
+
+// 4. SHEET DM_ND22
 function saveNd22ToSheet(ss, list) {
   var sheet = ss.getSheetByName('DM_ND22') || ss.insertSheet('DM_ND22');
   sheet.clear();
@@ -6375,6 +7241,7 @@ function saveNd22ToSheet(ss, list) {
   sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
   sheet.autoResizeColumns(1, headers.length);
 }
+
 function getNd22FromSheet(ss) {
   var sheet = ss.getSheetByName('DM_ND22');
   if (!sheet) return [];
@@ -6393,13 +7260,15 @@ function getNd22FromSheet(ss) {
       serial: String(r[4] || '').trim(),
       origin: String(r[5] || '').trim(),
       tech_spec: String(r[5] || '').trim(),
-      use_date: String(r[6] || '').trim(),
+      use_date: formatDateCell(r[6]),
       status_cert: String(r[7] || '').trim(),
       note: String(r[8] || '').trim()
     });
   }
   return list;
 }
+
+// 5. SHEET DM_TT20
 function saveTt20ToSheet(ss, list) {
   var sheet = ss.getSheetByName('DM_TT20') || ss.insertSheet('DM_TT20');
   sheet.clear();
@@ -6416,6 +7285,7 @@ function saveTt20ToSheet(ss, list) {
   sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
   sheet.autoResizeColumns(1, headers.length);
 }
+
 function getTt20FromSheet(ss) {
   var sheet = ss.getSheetByName('DM_TT20');
   if (!sheet) return [];
@@ -6434,14 +7304,16 @@ function getTt20FromSheet(ss) {
       range_acc: String(r[4] || '').trim(),
       tech_spec: String(r[4] || '').trim(),
       cycle: String(r[5] || '').trim(),
-      last_calib: String(r[6] || '').trim(),
-      use_date: String(r[6] || '').trim(),
+      last_calib: formatDateCell(r[6]),
+      use_date: formatDateCell(r[6]),
       performer: String(r[7] || '').trim(),
       note: String(r[8] || '').trim()
     });
   }
   return list;
 }
+
+// 6. SHEET TaiKhoan
 function saveAccountsToSheet(ss, accounts) {
   var sheet = ss.getSheetByName('TaiKhoan') || ss.insertSheet('TaiKhoan');
   sheet.clear();
@@ -6455,6 +7327,7 @@ function saveAccountsToSheet(ss, accounts) {
   sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
   sheet.autoResizeColumns(1, headers.length);
 }
+
 function getAccountsFromSheet(ss) {
   var sheet = ss.getSheetByName('TaiKhoan');
   if (!sheet) return [];
@@ -6463,7 +7336,7 @@ function getAccountsFromSheet(ss) {
   var accounts = [];
   for (var i = 1; i < data.length; i++) {
     var r = data[i];
-    accounts.push({ id: 'acc_' + i, username: String(r[1]).trim(), password: String(r[2]).trim(), fullName: String(r[3]).trim(), role: String(r[4] || 'viewer').toLowerCase().trim(), dept: String(r[5] || '').trim(), note: String(r[6] || '').trim(), createdAt: String(r[7] || '').trim() });
+    accounts.push({ id: 'acc_' + i, username: String(r[1]).trim(), password: String(r[2]).trim(), fullName: String(r[3]).trim(), role: String(r[4] || 'viewer').toLowerCase().trim(), dept: String(r[5] || '').trim(), note: String(r[6] || '').trim(), createdAt: formatDateCell(r[7]) });
   }
   return accounts;
 }
@@ -6501,6 +7374,61 @@ function getAccountsFromSheet(ss) {
       }
     }
 
+        function getAllEventsList() {
+      const allEvents = [];
+      appState.equipments.forEach(eq => {
+        if (eq.events && eq.events.length > 0) {
+          eq.events.forEach(ev => {
+            const link = (ev.attachments && ev.attachments[0] && (ev.attachments[0].url || ev.attachments[0].data)) || '';
+            allEvents.push({
+              code: eq.code || '',
+              name: eq.name || '',
+              type: ev.type || '',
+              date: ev.date || '',
+              certNo: ev.certNo || '',
+              performer: ev.performer || '',
+              nextDate: ev.nextDate || '',
+              title: ev.title || '',
+              details: ev.details || '',
+              attachmentsCount: (ev.attachments && ev.attachments.length) || 0,
+              dossierUrl: link
+            });
+          });
+        }
+      });
+      return allEvents;
+    }
+
+    function generateAnnualPlanFromEquipments() {
+      const planRows = [];
+      let idx = 1;
+      appState.equipments.forEach(eq => {
+        const st = getEquipmentStatus(eq);
+        if (st.groupCode === 'ISOLATED' || eq.category === '7' || eq.category === '0' || eq.isIsolated) return;
+        const nextDateStr = eq.nextCalibMaintDate;
+        if (!nextDateStr || nextDateStr === '1899-12-31' || nextDateStr === '1900-12-31' || nextDateStr === '-') return;
+        const d = new Date(nextDateStr);
+        if (isNaN(d.getTime())) return;
+
+        planRows.push({
+          stt: idx++,
+          code: eq.code || '',
+          name: eq.name || '',
+          model: eq.model || '',
+          serialNo: eq.serialNo || '',
+          workType: (eq.category === '1' || eq.category === '2' || eq.calibCycle) ? 'Hiệu chuẩn & Kiểm định' : 'Bảo trì định kỳ',
+          cycle: eq.calibCycle ? `${eq.calibCycle} năm/lần` : (eq.maintCycle ? `${eq.maintCycle} tháng/lần` : '12 tháng/lần'),
+          year: d.getFullYear(),
+          proposedTime: `Tháng ${d.getMonth() + 1} / ${d.getFullYear()} (${formatDateDisplay(nextDateStr)})`,
+          dateStr: nextDateStr,
+          performer: eq.performer || 'Trung tâm kiểm định',
+          manager: eq.manager || '',
+          note: eq.note || ''
+        });
+      });
+      return planRows;
+    }
+
     async function exportToGoogleSheet() {
       if (!appState.gsheetUrl) {
         showToast('Vui lòng nhập URL Ứng dụng web Google Apps Script trước!', 'warning');
@@ -6508,13 +7436,15 @@ function getAccountsFromSheet(ss) {
         return;
       }
 
-      showToast(`Đang đẩy toàn bộ dữ liệu (${appState.equipments.length} thiết bị, NĐ22, TT20, tài khoản) lên Google Sheet...`, 'info');
+      showToast(`Đang đẩy toàn bộ 6 sheet (DM_Chung, KeHoach_Nam, NhatKy_SuKien, DM_ND22, DM_TT20, TaiKhoan) lên Google Sheet...`, 'info');
 
       try {
         const payload = {
           action: 'EXPORT_ALL',
           timestamp: new Date().toISOString(),
           equipments: appState.equipments,
+          plan: generateAnnualPlanFromEquipments(),
+          events: getAllEventsList(),
           accounts: appState.accounts,
           nd22: nd22State.data,
           tt20: tt20State.data
@@ -6527,7 +7457,7 @@ function getAccountsFromSheet(ss) {
           body: JSON.stringify(payload)
         });
 
-        showToast('Đã gửi toàn bộ dữ liệu thiết bị, sự kiện, NĐ22, TT20 lên Google Sheet thành công!', 'success');
+        showToast('Đã gửi toàn bộ dữ liệu 6 sheet lên Google Sheet thành công!', 'success');
       } catch(err) {
         console.error(err);
         showToast('Lỗi gửi dữ liệu lên Google Sheet: ' + err.message, 'warning');
@@ -6547,17 +7477,16 @@ function getAccountsFromSheet(ss) {
       }
 
       if (!silent) {
-        showToast('Đang nạp toàn bộ dữ liệu từ Google Sheet...', 'info');
+        showToast('Đang nạp toàn bộ 6 sheet từ Google Sheet...', 'info');
       }
 
-      // Nếu chưa có dữ liệu và đang nạp tự động, hiển thị trạng thái đang tải trên bảng
       const emptyState = document.getElementById('equipment-empty-state');
       if (appState.equipments.length === 0 && emptyState) {
         emptyState.innerHTML = `
           <div class="py-12 px-4 text-center">
             <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-            <h3 class="text-base font-bold text-slate-800">Đang tự động nạp dữ liệu thiết bị từ Google Sheet...</h3>
-            <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Vui lòng chờ trong giây lát để hệ thống tải toàn bộ danh mục thiết bị, kế hoạch năm, NĐ22 và TT20.</p>
+            <h3 class="text-base font-bold text-slate-800">Đang tự động nạp toàn bộ dữ liệu từ Google Sheet...</h3>
+            <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Vui lòng chờ trong giây lát để hệ thống tải toàn bộ DM_Chung, KeHoach_Nam, NhatKy_SuKien, NĐ22 và TT20.</p>
           </div>
         `;
         emptyState.classList.remove('hidden');
@@ -6570,16 +7499,24 @@ function getAccountsFromSheet(ss) {
         const data = await res.json();
 
         let countMsg = [];
+
+        // 1. Nạp DM_Chung (Equipments)
         if (data && data.equipments && Array.isArray(data.equipments) && data.equipments.length > 0) {
           appState.equipments = data.equipments.map((item, idx) => {
             if (!item.id) item.id = 'eq_' + (idx + 1);
             if (!item.events) item.events = [];
+            // Giữ lại previousCategory nếu đang ở nhóm 7
+            if (String(item.category || '').trim() === '7' && !item.previousCategory) {
+              item.previousCategory = '1';
+            }
+            if (item.status === 'ISOLATED_REPAIR' || item.status === 'ISOLATED_DISPOSAL' || String(item.category || '').trim() === '7') {
+              item.isIsolated = true;
+              item.isolatedType = item.status === 'ISOLATED_DISPOSAL' || (item.note && item.note.includes('thanh lý')) ? 'DISPOSAL' : 'REPAIR';
+            }
             return item;
           });
-          saveEquipmentsToStorage(true);
-          countMsg.push(`${data.equipments.length} thiết bị`);
+          countMsg.push(`${data.equipments.length} TB (DM_Chung)`);
 
-          // Đặt lại bộ lọc nếu người dùng bấm nạp thủ công
           if (!isAuto) {
             appState.searchQuery = '';
             appState.selectedCategory = 'ALL';
@@ -6604,16 +7541,76 @@ function getAccountsFromSheet(ss) {
             });
           }
         }
+
+        // 2. Nạp NhatKy_SuKien và ghép vào từng thiết bị tương ứng
+        if (data && data.events && Array.isArray(data.events) && data.events.length > 0) {
+          const eventsByCode = {};
+          data.events.forEach(ev => {
+            if (ev.code) {
+              const c = String(ev.code).trim().toUpperCase();
+              if (!eventsByCode[c]) eventsByCode[c] = [];
+              eventsByCode[c].push(ev);
+            }
+          });
+
+          appState.equipments.forEach(eq => {
+            const c = String(eq.code || '').trim().toUpperCase();
+            if (eventsByCode[c] && eventsByCode[c].length > 0) {
+              if (!eq.events) eq.events = [];
+              const existingKeys = new Set(eq.events.map(e => (e.date || '') + (e.type || '') + (e.details || '')));
+              eventsByCode[c].forEach(ev => {
+                const k = (ev.date || '') + (ev.type || '') + (ev.details || '');
+                if (!existingKeys.has(k)) {
+                  eq.events.push(ev);
+                  existingKeys.add(k);
+                }
+              });
+
+              // Đánh giá tình trạng cách ly / khôi phục từ sự kiện gần nhất
+              const sorted = [...eq.events].sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
+              if (sorted.length > 0) {
+                const latest = sorted[0];
+                if (latest.type && (latest.type.includes('Sự cố') || latest.type.includes('Cách ly') || latest.type.includes('Loại bỏ'))) {
+                  if (eq.category !== '7' && eq.category !== 7) eq.previousCategory = String(eq.category || '1').trim();
+                  eq.isIsolated = true;
+                  eq.category = '7';
+                  eq.isolatedType = latest.type.includes('thanh lý') || latest.type.includes('Loại bỏ') || (latest.details && latest.details.includes('thanh lý')) ? 'DISPOSAL' : 'REPAIR';
+                  eq.status = eq.isolatedType === 'REPAIR' ? 'ISOLATED_REPAIR' : 'ISOLATED_DISPOSAL';
+                } else if (latest.type && latest.type.includes('sửa chữa xong')) {
+                  eq.isIsolated = false;
+                  eq.isolatedType = null;
+                  eq.category = eq.previousCategory || '1';
+                  eq.status = 'OPERATIONAL';
+                }
+              }
+            }
+          });
+          countMsg.push(`${data.events.length} sự kiện (NhatKy_SuKien)`);
+        }
+
+        // 3. Nạp KeHoach_Nam
+        if (data && data.plan && Array.isArray(data.plan) && data.plan.length > 0) {
+          appState.annualPlan = data.plan;
+          countMsg.push(`${data.plan.length} kế hoạch năm (KeHoach_Nam)`);
+        } else {
+          appState.annualPlan = generateAnnualPlanFromEquipments();
+        }
+
+        // 4. Nạp DM_ND22
         if (data && data.nd22 && Array.isArray(data.nd22) && data.nd22.length > 0) {
           nd22State.data = data.nd22;
           saveNd22ToStorage();
-          countMsg.push(`${data.nd22.length} thiết bị NĐ22`);
+          countMsg.push(`${data.nd22.length} TB NĐ22`);
         }
+
+        // 5. Nạp DM_TT20
         if (data && data.tt20 && Array.isArray(data.tt20) && data.tt20.length > 0) {
           tt20State.data = data.tt20;
           saveTt20ToStorage();
-          countMsg.push(`${data.tt20.length} thiết bị TT20`);
+          countMsg.push(`${data.tt20.length} TB TT20`);
         }
+
+        // 6. Nạp TaiKhoan
         if (data && data.accounts && Array.isArray(data.accounts) && data.accounts.length > 0) {
           appState.accounts = data.accounts;
           saveAccountsToStorage();
@@ -6621,6 +7618,7 @@ function getAccountsFromSheet(ss) {
           countMsg.push(`${data.accounts.length} tài khoản`);
         }
 
+        saveEquipmentsToStorage(true);
         syncNd22AndTt20FromEquipments();
         populateManagerDropdowns();
         updateMetricCards();
@@ -6630,11 +7628,10 @@ function getAccountsFromSheet(ss) {
         renderTt20Table();
         checkAndRenderAlerts();
 
-        // Đóng modal google sheet nếu đang mở để mở lại giao diện và thanh cuộn
         closeModal('modal-google-sheet');
 
         if (countMsg.length > 0) {
-          showToast(`Đã đồng bộ thành công: ${countMsg.join(', ')} từ Google Sheet!`, 'success');
+          showToast(`Đã đồng bộ thành công toàn bộ: ${countMsg.join(', ')} từ Google Sheet!`, 'success');
         } else {
           if (!isAuto) showToast('Google Sheet trả về dữ liệu rỗng hoặc chưa có dữ liệu.', 'warning');
         }
@@ -6658,7 +7655,12 @@ function getAccountsFromSheet(ss) {
         body: JSON.stringify({
           action: 'AUTO_SYNC',
           timestamp: new Date().toISOString(),
-          equipments: appState.equipments
+          equipments: appState.equipments,
+          plan: generateAnnualPlanFromEquipments(),
+          events: getAllEventsList(),
+          accounts: appState.accounts,
+          nd22: nd22State.data,
+          tt20: tt20State.data
         })
       }).catch(e => console.log('Auto sync silent fail:', e));
     }
