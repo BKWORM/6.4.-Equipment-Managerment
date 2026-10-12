@@ -6006,16 +6006,16 @@ Lưu ý: Nếu thiết bị hỏng, khuyến nghị dùng chức năng "Loại b
             <tr>
               <td style="width: 50%; text-align: left;">
                 <div style="font-size: 8pt; font-weight: bold; text-transform: uppercase; color:#1e293b;">TRUNG TÂM CHẤT LƯỢNG, CHẾ BIẾN VÀ PHÁT TRIỂN THỊ TRƯỜNG VÙNG 1</div>
-                <div style="font-size: 8pt; font-weight: bold; text-transform: uppercase; color:#0369a1;">PHÒNG KIỂM NGHIỆM HÓA HỌC (NAFIQPM - CENTER 1)</div>
+                <div style="font-size: 8pt; font-weight: bold; text-transform: uppercase; color:#0369a1;">PHÒNG KIỂM NGHIỆM HÓA HỌC</div>
               </td>
               <td style="width: 50%; text-align: right;">
-                <div style="font-size: 8pt; font-weight: bold; color:#334155;">BIỂU MẪU QUẢN LÝ THIẾT BỊ ISO/IEC 17025:2017</div>
+                <div style="font-size: 8pt; font-weight: bold; color:#334155;">BM.QUẢN LÝ THIẾT BỊ ISO/IEC 17025:2017</div>
                 <div style="font-size: 7.5pt; font-style: italic; color:#64748b;">Khoản 6.4.13: Hồ sơ lý lịch & nhật ký sự kiện vòng đời | Ngày in: ${printDateStr}</div>
               </td>
             </tr>
           </table>
 
-          <div class="title-main">NHẬT KÝ SỰ KIỆN VÒNG ĐỜI & HỒ SƠ QUẢN LÝ THIẾT BỊ (A4 NGANG)</div>
+          <div class="title-main">NHẬT KÝ SỰ KIỆN VÒNG ĐỜI & HỒ SƠ QUẢN LÝ THIẾT BỊ</div>
           <div class="title-sub">Theo dõi toàn bộ quá trình: Tiếp nhận, Nghiệm thu, Hiệu chuẩn, Kiểm định, Bảo trì, Sự cố/Cách ly, Sửa chữa & Thanh lý</div>
 
           <!-- COMPACT METADATA CARD (4 COLUMNS IN LANDSCAPE) -->
@@ -6836,8 +6836,10 @@ function doGet(e) {
     return ContentService.createTextOutput(JSON.stringify({ status: 'success', tt20: getTt20FromSheet(ss) })).setMimeType(ContentService.MimeType.JSON);
   } else {
     // GET_ALL: Đồng bộ toàn bộ các sheet: DM_Chung, KeHoach_Nam, NhatKy_SuKien, DM_ND22, DM_TT20, TaiKhoan
+    var evSheetCheck = ss.getSheetByName('NhatKy_SuKien') || ss.getSheetByName('Nhat Ky Su Kien') || ss.getSheetByName('Nhật ký sự kiện') || ss.getSheetByName('NhatKy');
     return ContentService.createTextOutput(JSON.stringify({
       status: 'success',
+      hasEventsSheet: (evSheetCheck !== null && evSheetCheck !== undefined),
       equipments: getEquipmentsFromSheet(ss),
       plan: getPlanFromSheet(ss),
       events: getEventsFromSheet(ss),
@@ -6999,6 +7001,21 @@ function getEquipmentsFromSheet(ss) {
   var colEventsJson = findColIndex(headers, ['nhật ký sự kiện (json)', 'nhật ký sự kiện', 'events']);
   var colDossier = findColIndex(headers, ['đường dẫn hồ sơ', 'hồ sơ máy', 'catalogue', 'hdsd', 'url', 'link']);
 
+  // KIỂM TRA XEM CÓ SHEET NhatKy_SuKien KHÔNG:
+  var evSheet = ss.getSheetByName('NhatKy_SuKien') || ss.getSheetByName('Nhat Ky Su Kien') || ss.getSheetByName('Nhật ký sự kiện') || ss.getSheetByName('NhatKy');
+  var hasNhatKy = (evSheet !== null && evSheet !== undefined);
+  var eventsByCode = {};
+  if (hasNhatKy) {
+    var allEvents = getEventsFromSheet(ss);
+    allEvents.forEach(function(ev) {
+      if (ev.code) {
+        var c = String(ev.code).trim().toUpperCase();
+        if (!eventsByCode[c]) eventsByCode[c] = [];
+        eventsByCode[c].push(ev);
+      }
+    });
+  }
+
   var list = [];
   for (var i = 1; i < data.length; i++) {
     var r = data[i];
@@ -7007,8 +7024,15 @@ function getEquipmentsFromSheet(ss) {
     if (!code && !name) continue;
 
     var cleanCode = code || ('HH-' + i);
+    var codeKey = cleanCode.toUpperCase();
     var events = [];
-    if (colEventsJson !== -1 && r[colEventsJson]) {
+
+    if (hasNhatKy) {
+      // NẾU CÓ SHEET NhatKy_SuKien: Lấy 100% sự kiện từ sheet NhatKy_SuKien!
+      // Không lấy từ cột JSON cũ của DM_Chung để tránh phục hồi sự kiện đã bị xóa trên Google Sheet
+      events = eventsByCode[codeKey] || [];
+    } else if (colEventsJson !== -1 && r[colEventsJson]) {
+      // Chỉ khi KHÔNG CÓ sheet NhatKy_SuKien mới dự phòng từ cột JSON
       try { events = JSON.parse(r[colEventsJson]); } catch(e) {}
     }
 
@@ -7501,17 +7525,26 @@ function getAccountsFromSheet(ss) {
         let countMsg = [];
 
         // 1. Nạp DM_Chung (Equipments)
+        // Kiểm tra xem dữ liệu Google Sheet có cung cấp sheet NhatKy_SuKien không
+        const hasNhatKySheet = (data && (data.hasEventsSheet || (data.events !== undefined && Array.isArray(data.events))));
+
         if (data && data.equipments && Array.isArray(data.equipments) && data.equipments.length > 0) {
           appState.equipments = data.equipments.map((item, idx) => {
             if (!item.id) item.id = 'eq_' + (idx + 1);
-            if (!item.events) item.events = [];
+            // NẾU CÓ SHEET NhatKy_SuKien: Reset item.events về rỗng để nạp chuẩn xác 100% từ NhatKy_SuKien.
+            // Điều này đảm bảo sự kiện nào bị xóa trên Google Sheet sẽ biến mất hoàn toàn, không bị phục hồi từ cột JSON cũ của DM_Chung!
+            if (hasNhatKySheet) {
+              item.events = [];
+            } else if (!item.events) {
+              item.events = [];
+            }
             // Giữ lại previousCategory nếu đang ở nhóm 7
             if (String(item.category || '').trim() === '7' && !item.previousCategory) {
               item.previousCategory = '1';
             }
-            if (item.status === 'ISOLATED_REPAIR' || item.status === 'ISOLATED_DISPOSAL' || String(item.category || '').trim() === '7') {
+            if (item.status === 'ISOLATED_REPAIR' || item.status === 'ISOLATED_DISPOSAL' || item.status === 'DISPOSED' || String(item.category || '').trim() === '7') {
               item.isIsolated = true;
-              item.isolatedType = item.status === 'ISOLATED_DISPOSAL' || (item.note && item.note.includes('thanh lý')) ? 'DISPOSAL' : 'REPAIR';
+              item.isolatedType = (item.status === 'DISPOSED' || item.status === 'ISOLATED_DISPOSAL' || (item.note && item.note.includes('thanh lý'))) ? 'DISPOSAL' : 'REPAIR';
             }
             return item;
           });
@@ -7542,10 +7575,11 @@ function getAccountsFromSheet(ss) {
           }
         }
 
-        // 2. Nạp NhatKy_SuKien và ghép vào từng thiết bị tương ứng
-        if (data && data.events && Array.isArray(data.events) && data.events.length > 0) {
+        // 2. Nạp NhatKy_SuKien và gán trực tiếp vào từng thiết bị tương ứng
+        if (hasNhatKySheet) {
+          const eventsList = Array.isArray(data.events) ? data.events : [];
           const eventsByCode = {};
-          data.events.forEach(ev => {
+          eventsList.forEach(ev => {
             if (ev.code) {
               const c = String(ev.code).trim().toUpperCase();
               if (!eventsByCode[c]) eventsByCode[c] = [];
@@ -7555,37 +7589,44 @@ function getAccountsFromSheet(ss) {
 
           appState.equipments.forEach(eq => {
             const c = String(eq.code || '').trim().toUpperCase();
-            if (eventsByCode[c] && eventsByCode[c].length > 0) {
-              if (!eq.events) eq.events = [];
-              const existingKeys = new Set(eq.events.map(e => (e.date || '') + (e.type || '') + (e.details || '')));
-              eventsByCode[c].forEach(ev => {
-                const k = (ev.date || '') + (ev.type || '') + (ev.details || '');
-                if (!existingKeys.has(k)) {
-                  eq.events.push(ev);
-                  existingKeys.add(k);
-                }
-              });
+            // GÁN TRỰC TIẾP danh sách sự kiện từ NhatKy_SuKien (Sự kiện nào đã bị xóa khỏi sheet sẽ biến mất hoàn toàn)
+            eq.events = eventsByCode[c] ? [...eventsByCode[c]] : [];
 
-              // Đánh giá tình trạng cách ly / khôi phục từ sự kiện gần nhất
-              const sorted = [...eq.events].sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
-              if (sorted.length > 0) {
-                const latest = sorted[0];
-                if (latest.type && (latest.type.includes('Sự cố') || latest.type.includes('Cách ly') || latest.type.includes('Loại bỏ'))) {
-                  if (eq.category !== '7' && eq.category !== 7) eq.previousCategory = String(eq.category || '1').trim();
-                  eq.isIsolated = true;
-                  eq.category = '7';
-                  eq.isolatedType = latest.type.includes('thanh lý') || latest.type.includes('Loại bỏ') || (latest.details && latest.details.includes('thanh lý')) ? 'DISPOSAL' : 'REPAIR';
-                  eq.status = eq.isolatedType === 'REPAIR' ? 'ISOLATED_REPAIR' : 'ISOLATED_DISPOSAL';
-                } else if (latest.type && latest.type.includes('sửa chữa xong')) {
-                  eq.isIsolated = false;
-                  eq.isolatedType = null;
-                  eq.category = eq.previousCategory || '1';
-                  eq.status = 'OPERATIONAL';
-                }
+            // Đánh giá tình trạng cách ly / khôi phục từ sự kiện gần nhất
+            const sorted = [...eq.events].sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
+            if (sorted.length > 0) {
+              const latest = sorted[0];
+              if (latest.type && (latest.type.includes('bỏ/thanh lý') || latest.type.includes('thanh lý') || latest.type.includes('Loại bỏ'))) {
+                if (eq.category !== '7' && eq.category !== 7) eq.previousCategory = String(eq.category || '1').trim();
+                eq.isIsolated = true;
+                eq.isDisposed = true;
+                eq.category = '7';
+                eq.isolatedType = 'DISPOSAL';
+                eq.status = 'DISPOSED';
+              } else if (latest.type && (latest.type.includes('Sự cố') || latest.type.includes('Cách ly'))) {
+                if (eq.category !== '7' && eq.category !== 7) eq.previousCategory = String(eq.category || '1').trim();
+                eq.isIsolated = true;
+                eq.category = '7';
+                eq.isolatedType = (latest.details && latest.details.includes('thanh lý')) ? 'DISPOSAL' : 'REPAIR';
+                eq.status = eq.isolatedType === 'REPAIR' ? 'ISOLATED_REPAIR' : 'ISOLATED_DISPOSAL';
+              } else if (latest.type && latest.type.includes('sửa chữa xong')) {
+                eq.isIsolated = false;
+                eq.isolatedType = null;
+                eq.isDisposed = false;
+                eq.category = eq.previousCategory || '1';
+                eq.status = 'OPERATIONAL';
+              }
+            } else {
+              // Nếu toàn bộ sự kiện đã bị xóa khỏi thiết bị, kiểm tra nếu thiết bị đang ở nhóm 7 do sự kiện cũ thì khôi phục lại
+              if (eq.isIsolated && !eq.isDisposed && eq.previousCategory) {
+                eq.category = eq.previousCategory;
+                eq.isIsolated = false;
+                eq.isolatedType = null;
+                eq.status = 'OPERATIONAL';
               }
             }
           });
-          countMsg.push(`${data.events.length} sự kiện (NhatKy_SuKien)`);
+          countMsg.push(`${eventsList.length} sự kiện (NhatKy_SuKien)`);
         }
 
         // 3. Nạp KeHoach_Nam
