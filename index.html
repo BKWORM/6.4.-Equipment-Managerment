@@ -1657,17 +1657,19 @@
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Loại sự kiện *</label>
           <select id="event-type" required="" onchange="handleEventTypeChange()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-semibold text-slate-800">
-            <option value="Sự cố/ Cách ly">⚠️ Sự cố/ Cách ly (Dán nhãn chờ sửa chữa / chờ thanh lý)</option>
+            <option value="Sự cố / Hỏng - Cách ly chờ sửa chữa">⚠️ Sự cố / Hỏng - Cách ly chờ sửa chữa (Khoản 6.4.9)</option>
+            <option value="Sự cố / Hỏng - Cách ly chờ thanh lý">⚠️ Sự cố / Hỏng - Cách ly chờ thanh lý (Khoản 6.4.9)</option>
             <option value="Khắc phục sự cố / Đã sửa chữa xong">🛠️ Khắc phục sự cố / Đã sửa chữa xong (Đưa vào sử dụng lại)</option>
             <option value="Thiết bị đã bỏ/thanh lý">🚫 Thiết bị đã bỏ/thanh lý (Loại bỏ theo Khoản 6.4.9)</option>
             <option value="Thay đổi người theo dõi/sử dụng">🔄 Thay đổi người theo dõi/sử dụng (Bàn giao thiết bị)</option>
             <option value="Hiệu chuẩn / Kiểm định">🔬 Hiệu chuẩn / Kiểm định định kỳ</option>
             <option value="Bảo trì định kỳ / Đột xuất">🛠️ Bảo trì định kỳ / Đột xuất</option>
             <option value="Kiểm tra giữa kỳ">📋 Kiểm tra giữa kỳ / Kiểm tra chức năng</option>
+            <option value="Sự cố/ Cách ly">⚠️ Sự cố/ Cách ly (Chung)</option>
             <option value="Sự cố &amp; Sửa chữa">⚠️ Sự cố &amp; Sửa chữa thông thường</option>
             <option value="Nhật ký sử dụng">⏱️ Nhật ký sử dụng</option>
             <option value="Đánh giá nghiệm thu (IQ-OQ-PQ)">✅ Đánh giá nghiệm thu (IQ-OQ-PQ)</option>
-            <option value="Tiếp nhận thiết bị">📦 Tiếp nhận thiết bị</option>
+            <option value="Tiếp nhận thiết bị">📦 Tiếp nhận thiết bị &amp; Đưa vào vận hành</option>
             <option value="Loại bỏ / Thanh lý">🚫 Loại bỏ / Thanh lý (Khoản 6.4.9)</option>
           </select>
         </div>
@@ -3420,25 +3422,8 @@
       const note = String(eq.note || '').toLowerCase();
       const statusStr = String(eq.status || '').toUpperCase();
 
-      // Kiểm tra nếu thiết bị đang ở trạng thái cách ly / sự cố / chờ sửa chữa hoặc chờ thanh lý
-      const isExplicitRepair = eq.isIsolated && (eq.isolatedType === 'REPAIR' || eq.status === 'ISOLATED_REPAIR' || note.includes('chờ sửa'));
-      const isExplicitDisposal = (eq.isIsolated && (eq.isolatedType === 'DISPOSAL' || eq.status === 'ISOLATED_DISPOSAL' || note.includes('chờ thanh lý')))
-        || cat === '7' || statusStr === 'DISPOSED' || statusStr === 'ISOLATED_DISPOSAL'
-        || note.includes('đã hỏng') || note.includes('hỏng') || note.includes('thanh lý');
-
-      if (isExplicitRepair) {
-        return {
-          code: 'ISOLATED_REPAIR',
-          groupCode: 'ISOLATED',
-          label: 'Cách ly - Chờ sửa chữa',
-          badgeClass: 'bg-amber-100 text-amber-900 border-amber-300 font-bold',
-          dotClass: 'bg-amber-500 animate-pulse',
-          desc: 'Sự cố - Đã dán nhãn cách ly chờ sửa chữa (Khoản 6.4.9 ISO 17025)'
-        };
-      }
-
-      const isExplicitDisposed = eq.isDisposed || statusStr === 'DISPOSED' || note.includes('đã bỏ/thanh lý') || note.includes('đã thanh lý');
-
+      // 1. Kiểm tra nếu thiết bị đã bỏ / thanh lý hoàn toàn
+      const isExplicitDisposed = eq.isDisposed || statusStr === 'DISPOSED' || note.includes('đã bỏ/thanh lý') || note.includes('đã thanh lý') || note.includes('đã bỏ');
       if (isExplicitDisposed) {
         return {
           code: 'DISPOSED',
@@ -3449,6 +3434,27 @@
           desc: 'Thiết bị đã bỏ/thanh lý ngưng sử dụng hoàn toàn (Khoản 6.4.9 ISO 17025)'
         };
       }
+
+      // 2. Kiểm tra nếu thiết bị đang cách ly chờ sửa chữa
+      const isExplicitRepair = eq.isolatedType === 'REPAIR' || statusStr === 'ISOLATED_REPAIR'
+        || note.includes('chờ sửa') || note.includes('sửa chữa')
+        || (cat === '7' && (eq.isolatedType === 'REPAIR' || (!note.includes('thanh lý') && !note.includes('đã hỏng'))));
+
+      if (isExplicitRepair) {
+        return {
+          code: 'ISOLATED_REPAIR',
+          groupCode: 'ISOLATED',
+          label: 'Cách ly - Chờ sửa chữa',
+          badgeClass: 'bg-amber-100 text-amber-900 border-amber-300 font-bold',
+          dotClass: 'bg-amber-500 animate-pulse',
+          desc: 'Sự cố / Hỏng - Đã dán nhãn cách ly chờ sửa chữa (Khoản 6.4.9 ISO 17025)'
+        };
+      }
+
+      // 3. Kiểm tra nếu thiết bị đang cách ly chờ thanh lý
+      const isExplicitDisposal = eq.isolatedType === 'DISPOSAL' || statusStr === 'ISOLATED_DISPOSAL'
+        || note.includes('chờ thanh lý') || note.includes('đã hỏng') || note.includes('thanh lý')
+        || (cat === '7' && (eq.isolatedType === 'DISPOSAL' || note.includes('thanh lý')));
 
       if (isExplicitDisposal) {
         return {
@@ -3531,6 +3537,97 @@
           desc: 'Đang trong hạn hiệu chuẩn/bảo trì'
         };
       }
+    }
+
+
+    // ==========================================
+    // ĐẢM BẢO TẤT CẢ SỰ KIỆN VÒNG ĐỜI ĐƯỢC GHI NHẬN (KHOẢN 6.4.13)
+    // Tự động bổ sung sự kiện hỏng, chờ sửa / chờ thanh lý vào "Nhật Ký Sự Kiện Vòng Đời & Hồ Sơ"
+    // ==========================================
+    function ensureEquipmentLifecycleEvents(eq) {
+      if (!eq) return;
+      if (!eq.events) eq.events = [];
+
+      const cat = String(eq.category || '').trim();
+      const note = String(eq.note || '').toLowerCase();
+      const statusStr = String(eq.status || '').toUpperCase();
+
+      const isDisposed = eq.isDisposed || statusStr === 'DISPOSED' || note.includes('đã bỏ/thanh lý') || note.includes('đã thanh lý') || note.includes('đã bỏ');
+      const isRepair = eq.isolatedType === 'REPAIR' || statusStr === 'ISOLATED_REPAIR' || note.includes('chờ sửa') || note.includes('sửa chữa') || (cat === '7' && !note.includes('thanh lý') && !note.includes('đã hỏng'));
+      const isDisposal = eq.isolatedType === 'DISPOSAL' || statusStr === 'ISOLATED_DISPOSAL' || note.includes('chờ thanh lý') || note.includes('đã hỏng') || (cat === '7' && note.includes('thanh lý'));
+
+      if (cat === '7' || eq.isIsolated || isDisposed || isRepair || isDisposal) {
+        eq.isIsolated = true;
+        if (isDisposed) {
+          eq.isDisposed = true;
+          eq.isolatedType = 'DISPOSAL';
+          eq.status = 'DISPOSED';
+        } else if (isRepair) {
+          eq.isolatedType = 'REPAIR';
+          eq.status = 'ISOLATED_REPAIR';
+        } else {
+          eq.isolatedType = 'DISPOSAL';
+          eq.status = 'ISOLATED_DISPOSAL';
+        }
+
+        // Kiểm tra xem đã có sự kiện hỏng / chờ sửa / cách ly / thanh lý chưa
+        const hasIsoEvent = eq.events.some(ev => {
+          const t = String(ev.type || '').toLowerCase();
+          const d = String(ev.details || '').toLowerCase();
+          const tit = String(ev.title || '').toLowerCase();
+          return t.includes('sự cố') || t.includes('cách ly') || t.includes('hỏng') || t.includes('chờ sửa') || t.includes('thanh lý') || t.includes('loại bỏ')
+              || d.includes('cách ly') || d.includes('sự cố') || d.includes('chờ sửa') || tit.includes('sự cố') || tit.includes('chờ sửa') || tit.includes('cách ly');
+        });
+
+        if (!hasIsoEvent) {
+          const evDate = eq.lastCalibMaintDate || (eq.disposalInfo && eq.disposalInfo.date) || eq.operateDate || eq.receiveDate || new Date().toISOString().split('T')[0];
+          let evType = 'Sự cố/ Cách ly';
+          let evTitle = '';
+          let evDetails = '';
+          let stickerName = '';
+
+          if (isDisposed) {
+            evType = 'Thiết bị đã bỏ/thanh lý';
+            evTitle = `Thiết bị ${eq.code} đã bỏ / thanh lý hoàn toàn (Khoản 6.4.9 ISO 17025)`;
+            evDetails = `THIẾT BỊ ĐÃ BỎ / THANH LÝ (KHOẢN 6.4.9 ISO 17025):\n- Hiện trạng: Ngưng sử dụng vĩnh viễn\n- Lý do: ${eq.note || 'Thiết bị hư hỏng không thể phục hồi / Hết khấu hao'}\n- Biện pháp: Dán nhãn đỏ THIẾT BỊ ĐÃ THANH LÝ - CẤM SỬ DỤNG, niêm phong và di chuyển khỏi PTN.\n- Cán bộ phụ trách: ${eq.manager || 'Phòng KN Hóa học'}`;
+            stickerName = 'Tem_Nhan_Thiet_Bi_Da_Thanh_Ly.png';
+          } else if (isRepair) {
+            evType = 'Sự cố / Hỏng - Cách ly chờ sửa chữa';
+            evTitle = `Thiết bị ${eq.code} gặp sự cố - Dán nhãn cách ly chờ sửa chữa (Khoản 6.4.9 ISO 17025)`;
+            evDetails = `SỰ CỐ & DÁN NHÃN CÁCH LY THIẾT BỊ (KHOẢN 6.4.9 ISO 17025):\n- Mục đích cách ly: Cách ly - Chờ sửa chữa\n- Cán bộ phát hiện / Phụ trách: ${eq.manager || 'Phòng KN Hóa học'}\n- Hiện tượng sự cố / Lý do: ${eq.note || 'Thiết bị gặp sự cố hư hỏng, tạm ngừng sử dụng chờ kỹ thuật kiểm tra và sửa chữa'}\n- Biện pháp cách ly & Dán nhãn: Dán nhãn vàng/đỏ THIẾT BỊ SỰ CỐ - CÁCH LY CHỜ SỬA CHỮA, ngắt nguồn điện và đưa vào khu vực cách ly tránh sử dụng nhầm lẫn.`;
+            stickerName = 'Nhan_Cach_Ly_Cho_Sua_Chua.png';
+          } else {
+            evType = 'Sự cố / Hỏng - Cách ly chờ thanh lý';
+            evTitle = `Thiết bị ${eq.code} hỏng - Dán nhãn cách ly chờ thanh lý (Khoản 6.4.9 ISO 17025)`;
+            evDetails = `SỰ CỐ & DÁN NHÃN CÁCH LY THIẾT BỊ (KHOẢN 6.4.9 ISO 17025):\n- Mục đích cách ly: Cách ly - Chờ thanh lý\n- Cán bộ phát hiện / Phụ trách: ${eq.manager || 'Phòng KN Hóa học'}\n- Hiện tượng sự cố / Lý do: ${eq.note || 'Thiết bị hư hỏng không thể khắc phục, chờ làm thủ tục thanh lý tài sản'}\n- Biện pháp cách ly & Dán nhãn: Dán nhãn đỏ THIẾT BỊ HỎNG - CÁCH LY CHỜ THANH LÝ, ngắt nguồn điện và niêm phong cách ly tránh sử dụng nhầm.`;
+            stickerName = 'Nhan_Cach_Ly_Cho_Thanh_Ly.png';
+          }
+
+          eq.events.unshift({
+            id: 'evt-auto-' + (eq.id || 'eq') + '-' + Date.now(),
+            type: evType,
+            date: evDate,
+            performer: eq.manager || 'Phòng KN Hóa học',
+            title: evTitle,
+            details: evDetails,
+            attachments: [
+              {
+                id: 'sticker-auto-' + Date.now(),
+                name: stickerName,
+                type: 'image/png',
+                data: SAMPLE_STICKER_B64
+              }
+            ]
+          });
+        }
+      }
+    }
+
+    function ensureAllEquipmentsLifecycleEvents() {
+      if (!appState.equipments || !Array.isArray(appState.equipments)) return;
+      appState.equipments.forEach(eq => {
+        ensureEquipmentLifecycleEvents(eq);
+      });
     }
 
     async function initApp() {
@@ -3630,6 +3727,7 @@
         appState.isAdmin = true;
       }
 
+      ensureAllEquipmentsLifecycleEvents();
       syncNd22AndTt20FromEquipments();
       updateUserInterface();
       renderAccountsTable();
@@ -4971,26 +5069,38 @@ function updateAuthUI() {
 
       let html = '';
       sorted.forEach(evt => {
-        const isCustody = evt.type === 'Thay đổi người theo dõi/sử dụng' || evt.type === 'Bàn giao thiết bị';
-        const isDispose = evt.type === 'Loại bỏ thiết bị' || evt.type === 'Loại bỏ / Thanh lý';
-        const isCalib = evt.type === 'Hiệu chuẩn / Kiểm định' || evt.type === 'Hiệu chuẩn thiết bị';
-        const isMaint = evt.type === 'Bảo trì định kỳ / Đột xuất' || evt.type === 'Bảo trì thiết bị';
+        const typeStr = String(evt.type || '').toLowerCase();
+        const detailsStr = String(evt.details || '').toLowerCase();
+
+        const isCustody = typeStr.includes('người theo dõi') || typeStr.includes('bàn giao');
+        const isDispose = typeStr.includes('đã bỏ') || typeStr.includes('thanh lý') || typeStr.includes('loại bỏ');
+        const isRestore = typeStr.includes('sửa chữa xong') || typeStr.includes('khắc phục');
+        const isIsolate = (typeStr.includes('sự cố') || typeStr.includes('cách ly') || typeStr.includes('hỏng') || typeStr.includes('chờ sửa') || detailsStr.includes('chờ sửa')) && !isRestore && !isDispose;
+        const isCalib = typeStr.includes('hiệu chuẩn') || typeStr.includes('kiểm định');
+        const isMaint = typeStr.includes('bảo trì');
 
         let badgeColor = 'bg-blue-100 text-blue-800 border-blue-200';
         let iconSvg = '<svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
 
-        if (isCustody) {
-          badgeColor = 'bg-indigo-100 text-indigo-900 border-indigo-300 font-bold';
-          iconSvg = '<svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>';
+        if (isIsolate) {
+          const isRepair = detailsStr.includes('chờ sửa') || typeStr.includes('chờ sửa');
+          badgeColor = isRepair ? 'bg-amber-100 text-amber-900 border-amber-300 font-bold' : 'bg-rose-100 text-rose-900 border-rose-300 font-bold';
+          iconSvg = '<svg class="w-4 h-4 ' + (isRepair ? 'text-amber-600' : 'text-rose-600') + '" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>';
+        } else if (isRestore) {
+          badgeColor = 'bg-emerald-100 text-emerald-900 border-emerald-300 font-bold';
+          iconSvg = '<svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
         } else if (isDispose) {
           badgeColor = 'bg-rose-100 text-rose-900 border-rose-300 font-bold';
           iconSvg = '<svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>';
+        } else if (isCustody) {
+          badgeColor = 'bg-indigo-100 text-indigo-900 border-indigo-300 font-bold';
+          iconSvg = '<svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>';
         } else if (isCalib) {
           badgeColor = 'bg-purple-100 text-purple-800 border-purple-200';
           iconSvg = '<svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>';
         } else if (isMaint) {
-          badgeColor = 'bg-emerald-100 text-emerald-800 border-emerald-200';
-          iconSvg = '<svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>';
+          badgeColor = 'bg-teal-100 text-teal-800 border-teal-200';
+          iconSvg = '<svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>';
         }
 
         html += `
@@ -5006,6 +5116,7 @@ function updateAuthUI() {
               <span class="text-xs text-slate-500 italic">Thực hiện: ${escapeHtml(evt.performer || 'Nội bộ')}</span>
             </div>
 
+            ${evt.title ? `<div class="text-xs font-bold text-slate-900">${escapeHtml(evt.title)}</div>` : ''}
             <p class="text-xs text-slate-700 whitespace-pre-line bg-slate-50 p-2.5 rounded-lg border border-slate-100">
               ${escapeHtml(evt.details || 'Không có mô tả chi tiết')}
             </p>
@@ -5080,36 +5191,64 @@ function updateAuthUI() {
 
       const val = typeSelect.value;
       if (custodyBox) {
-        if (val === 'Thay đổi người theo dõi/sử dụng') custodyBox.classList.remove('hidden');
+        if (val === 'Thay đổi người theo dõi/sử dụng' || val.includes('theo dõi') || val.includes('bàn giao') || val.includes('Bàn giao')) custodyBox.classList.remove('hidden');
         else custodyBox.classList.add('hidden');
       }
       if (isolationBox) {
-        if (val === 'Sự cố/ Cách ly') isolationBox.classList.remove('hidden');
-        else isolationBox.classList.add('hidden');
+        const isIso = val.includes('Sự cố') || val.includes('Cách ly') || val.includes('Hỏng') || val.includes('hỏng') || val.includes('chờ sửa');
+        if (isIso && !val.includes('sửa chữa xong') && !val.includes('đã bỏ')) {
+          isolationBox.classList.remove('hidden');
+          const isoTypeSelect = document.getElementById('event-isolation-type');
+          if (isoTypeSelect) {
+            if (val.includes('thanh lý')) isoTypeSelect.value = 'DISPOSAL';
+            else if (val.includes('sửa') || val.includes('Sự cố')) isoTypeSelect.value = 'REPAIR';
+          }
+        } else {
+          isolationBox.classList.add('hidden');
+        }
       }
       if (repairBox) {
-        if (val === 'Khắc phục sự cố / Đã sửa chữa xong') repairBox.classList.remove('hidden');
+        if (val === 'Khắc phục sự cố / Đã sửa chữa xong' || val.includes('sửa chữa xong')) repairBox.classList.remove('hidden');
         else repairBox.classList.add('hidden');
       }
       if (disposeBox) {
-        if (val === 'Thiết bị đã bỏ/thanh lý' || val === 'Loại bỏ / Thanh lý') disposeBox.classList.remove('hidden');
+        if (val === 'Thiết bị đã bỏ/thanh lý' || val === 'Loại bỏ / Thanh lý' || val.includes('đã bỏ/thanh lý')) disposeBox.classList.remove('hidden');
         else disposeBox.classList.add('hidden');
       }
     }
 
-        function openIsolateEquipmentModal(eqId) {
+    function openIsolateEquipmentModal(eqId, defaultIsoType = 'REPAIR') {
       const eq = appState.equipments.find(e => e.id === eqId);
       if (!eq) return;
       openAddEventModal(eqId);
       const typeSelect = document.getElementById('event-type');
       if (typeSelect) {
-        typeSelect.value = 'Sự cố/ Cách ly';
+        typeSelect.value = defaultIsoType === 'REPAIR' 
+          ? 'Sự cố / Hỏng - Cách ly chờ sửa chữa' 
+          : 'Sự cố / Hỏng - Cách ly chờ thanh lý';
         handleEventTypeChange();
+      }
+      const isoTypeSelect = document.getElementById('event-isolation-type');
+      if (isoTypeSelect) {
+        isoTypeSelect.value = defaultIsoType;
+      }
+      const titleInput = document.getElementById('event-title');
+      if (titleInput) {
+        titleInput.value = defaultIsoType === 'REPAIR'
+          ? `Báo cáo sự cố & dán nhãn cách ly chờ sửa chữa thiết bị ${eq.code}`
+          : `Báo cáo thiết bị hỏng & dán nhãn cách ly chờ thanh lý ${eq.code}`;
       }
       const proposer = document.getElementById('event-isolation-proposer');
       if (proposer) proposer.value = eq.manager || '';
+      const performerInput = document.getElementById('event-performer');
+      if (performerInput) performerInput.value = eq.manager || 'Phòng KN Hóa học';
       const reason = document.getElementById('event-isolation-reason');
-      if (reason) setTimeout(() => reason.focus(), 200);
+      if (reason) {
+        if (eq.note && (eq.note.includes('hỏng') || eq.note.includes('sự cố') || eq.note.includes('sửa'))) {
+          reason.value = eq.note;
+        }
+        setTimeout(() => reason.focus(), 200);
+      }
     }
 
     function openDisposeEquipmentModal(eqId) {
@@ -5121,6 +5260,12 @@ function updateAuthUI() {
         typeSelect.value = 'Thiết bị đã bỏ/thanh lý';
         handleEventTypeChange();
       }
+      const titleInput = document.getElementById('event-title');
+      if (titleInput) {
+        titleInput.value = `Quyết định thanh lý & loại bỏ thiết bị ${eq.code}`;
+      }
+      const performerInput = document.getElementById('event-performer');
+      if (performerInput) performerInput.value = eq.manager || 'Hội đồng thanh lý';
       const decInput = document.getElementById('event-dispose-decision');
       if (decInput) setTimeout(() => decInput.focus(), 200);
     }
@@ -5137,6 +5282,10 @@ function updateAuthUI() {
       const repCat = document.getElementById('event-repair-category');
       if (repCat && eq.previousCategory) {
         repCat.value = eq.previousCategory;
+      }
+      const titleInput = document.getElementById('event-title');
+      if (titleInput) {
+        titleInput.value = `Biên bản khắc phục sự cố & đưa thiết bị ${eq.code} vào hoạt động lại`;
       }
       const repPerf = document.getElementById('event-repair-performer');
       if (repPerf) repPerf.value = 'Đơn vị bảo trì / kỹ thuật viên';
@@ -5230,8 +5379,19 @@ function updateAuthUI() {
       const title = document.getElementById('event-title').value.trim();
       let details = document.getElementById('event-details').value.trim();
 
-      if (eventType === 'Sự cố/ Cách ly') {
-        const isoType = document.getElementById('event-isolation-type') ? document.getElementById('event-isolation-type').value : 'REPAIR';
+      // Khai báo attachments ở ngay đầu hàm để tránh lỗi ReferenceError TDZ
+      const attachments = [];
+
+      const isIsolationEvent = eventType === 'Sự cố/ Cách ly' 
+        || eventType.includes('Sự cố') 
+        || eventType.includes('Cách ly') 
+        || eventType.includes('Hỏng') 
+        || eventType.includes('hỏng') 
+        || eventType.includes('chờ sửa');
+
+      if (isIsolationEvent && !eventType.includes('sửa chữa xong') && !eventType.includes('đã bỏ')) {
+        const isoTypeSelect = document.getElementById('event-isolation-type');
+        let isoType = isoTypeSelect ? isoTypeSelect.value : (eventType.includes('thanh lý') ? 'DISPOSAL' : 'REPAIR');
         const isoProposer = document.getElementById('event-isolation-proposer') ? document.getElementById('event-isolation-proposer').value.trim() : (eq.manager || '');
         const isoReason = document.getElementById('event-isolation-reason') ? document.getElementById('event-isolation-reason').value.trim() : '';
         const isoMeasures = document.getElementById('event-isolation-measures') ? document.getElementById('event-isolation-measures').value.trim() : '';
@@ -5244,7 +5404,9 @@ function updateAuthUI() {
         eq.isolatedType = isoType; // 'REPAIR' hoặc 'DISPOSAL'
         eq.category = '7'; // Chuyển vào danh mục 7: Chờ sửa/thanh lý
         eq.status = isoType === 'REPAIR' ? 'ISOLATED_REPAIR' : 'ISOLATED_DISPOSAL';
-        eq.note = isoType === 'REPAIR' ? 'Sự cố - Cách ly chờ sửa chữa (Khoản 6.4.9 ISO 17025)' : 'Đã hỏng - Cách ly chờ thanh lý (Khoản 6.4.9 ISO 17025)';
+        eq.note = isoType === 'REPAIR' 
+          ? (isoReason || 'Sự cố - Cách ly chờ sửa chữa (Khoản 6.4.9 ISO 17025)') 
+          : (isoReason || 'Đã hỏng - Cách ly chờ thanh lý (Khoản 6.4.9 ISO 17025)');
         eq.disposalInfo = {
           date: eventDate,
           reason: isoReason,
@@ -5255,9 +5417,9 @@ function updateAuthUI() {
 
         details = `SỰ CỐ & DÁN NHÃN CÁCH LY THIẾT BỊ (KHOẢN 6.4.9 ISO 17025):
 - Mục đích cách ly: ${isoType === 'REPAIR' ? 'Cách ly - Chờ sửa chữa' : 'Cách ly - Chờ thanh lý'}
-- Cán bộ phát hiện / Đề xuất: ${isoProposer || 'Phòng KN'}
-- Hiện tượng sự cố / Lý do: ${isoReason || 'Thiết bị gặp sự cố hư hỏng'}
-- Biện pháp cách ly & Dán nhãn: ${isoMeasures}
+- Cán bộ phát hiện / Đề xuất: ${isoProposer || eq.manager || 'Phòng KN'}
+- Hiện tượng sự cố / Lý do: ${isoReason || 'Thiết bị gặp sự cố hư hỏng, tạm ngừng sử dụng chờ xử lý'}
+- Biện pháp cách ly & Dán nhãn: ${isoMeasures || 'Dán nhãn cách ly, ngắt điện và chuyển vào khu vực cách ly tránh sử dụng nhầm.'}
 ${details ? `- Chi tiết bổ sung: ${details}` : ''}`;
 
         if (!currentUploadedEventFile) {
@@ -5268,7 +5430,7 @@ ${details ? `- Chi tiết bổ sung: ${details}` : ''}`;
             data: SAMPLE_STICKER_B64
           });
         }
-      } else if (eventType === 'Khắc phục sự cố / Đã sửa chữa xong') {
+      } else if (eventType === 'Khắc phục sự cố / Đã sửa chữa xong' || eventType.includes('sửa chữa xong')) {
         const restoredCat = document.getElementById('event-repair-category') ? document.getElementById('event-repair-category').value : (eq.previousCategory || '1');
         const repairPerf = document.getElementById('event-repair-performer') ? document.getElementById('event-repair-performer').value.trim() : (performer || 'Nội bộ');
         const repairDtl = document.getElementById('event-repair-details') ? document.getElementById('event-repair-details').value.trim() : '';
@@ -5283,12 +5445,12 @@ ${details ? `- Chi tiết bổ sung: ${details}` : ''}`;
         eq.note = 'Đã khắc phục sự cố, đưa vào sử dụng lại bình thường';
 
         details = `KHẮC PHỤC SỰ CỐ / ĐÃ SỬA CHỮA XONG - ĐƯA VÀO HOẠT ĐỘNG LẠI:
-- Phục hồi về danh mục: Nhóm ${restoredCat} (như trước khi sự kiện hỏng)
+- Phục hồi về danh mục: Nhóm ${restoredCat} (${(EQUIPMENT_CATEGORIES[restoredCat] && EQUIPMENT_CATEGORIES[restoredCat].label) || 'Thiết bị'})
 - Đơn vị / Kỹ thuật viên sửa chữa: ${repairPerf}
 - Nội dung sửa chữa & Thay thế: ${repairDtl || 'Đã sửa chữa và khắc phục lỗi hoàn tất'}
-- Kết quả kiểm tra hoạt động: ${repairResult || 'Đạt yêu cầu kỹ thuật'}
+- Kết quả kiểm tra hoạt động: ${repairResult || 'Đạt yêu cầu kỹ thuật, hoạt động ổn định'}
 ${details ? `- Chi tiết bổ sung: ${details}` : ''}`;
-      } else if (eventType === 'Thiết bị đã bỏ/thanh lý' || eventType === 'Loại bỏ / Thanh lý') {
+      } else if (eventType === 'Thiết bị đã bỏ/thanh lý' || eventType === 'Loại bỏ / Thanh lý' || eventType.includes('đã bỏ/thanh lý')) {
         const dispDecision = document.getElementById('event-dispose-decision') ? document.getElementById('event-dispose-decision').value.trim() : '';
         const dispApprover = document.getElementById('event-dispose-approver') ? document.getElementById('event-dispose-approver').value.trim() : 'Hội đồng thanh lý';
         const dispReason = document.getElementById('event-dispose-reason') ? document.getElementById('event-dispose-reason').value.trim() : '';
@@ -5319,7 +5481,7 @@ ${details ? `- Chi tiết bổ sung: ${details}` : ''}`;
 - Người / Hội đồng phê duyệt: ${dispApprover}
 - Lý do thanh lý / loại bỏ hoàn toàn: ${dispReason || 'Hư hỏng không thể sửa chữa / Hết khấu hao'}
 - Hình thức xử lý sau thanh lý: ${dispMethod}
-- Biện pháp dán nhãn & niêm phong: ${dispMeasures}
+- Biện pháp dán nhãn & niêm phong: ${dispMeasures || 'Dán nhãn đỏ THIẾT BỊ ĐÃ THANH LÝ - CẤM SỬ DỤNG'}
 ${details ? `- Chi tiết bổ sung: ${details}` : ''}`;
 
         if (!currentUploadedEventFile) {
@@ -5330,12 +5492,12 @@ ${details ? `- Chi tiết bổ sung: ${details}` : ''}`;
             data: SAMPLE_STICKER_B64
           });
         }
-      } else if (eventType === 'Thay đổi người theo dõi/sử dụng') {
+      } else if (eventType === 'Thay đổi người theo dõi/sử dụng' || eventType.includes('người theo dõi')) {
         const oldManager = document.getElementById('event-custody-old-manager').value.trim();
         const newManager = document.getElementById('event-custody-new-manager').value.trim();
         const custodyDate = document.getElementById('event-custody-date').value || eventDate;
         const decision = document.getElementById('event-custody-decision').value.trim();
-        const autoUpdate = document.getElementById('event-custody-update-checkbox').checked;
+        const autoUpdate = document.getElementById('event-custody-update-checkbox') ? document.getElementById('event-custody-update-checkbox').checked : true;
 
         if (!newManager) {
           showToast('Vui lòng nhập tên Người nhận theo dõi mới!', 'warning');
@@ -5356,7 +5518,7 @@ ${details ? `- Nội dung bổ sung: ${details}` : ''}`;
         }
       }
 
-      // Đọc Số GCN và Thời hạn lần tới (Yêu cầu 3)
+      // Đọc Số GCN và Thời hạn lần tới
       const certNo = document.getElementById('event-cert-no') ? document.getElementById('event-cert-no').value.trim() : '';
       const nextDateVal = document.getElementById('event-next-date') ? document.getElementById('event-next-date').value : '';
 
@@ -5376,7 +5538,6 @@ ${details ? `- Nội dung bổ sung: ${details}` : ''}`;
         eq.performer = performer;
       }
 
-      const attachments = [];
       if (currentUploadedEventFile) {
         attachments.push({
           id: currentUploadedEventFile.id,
@@ -5396,20 +5557,40 @@ ${details ? `- Nội dung bổ sung: ${details}` : ''}`;
         });
       }
 
+      // Xác định tiêu đề hiển thị sự kiện mặc định nếu người dùng chưa nhập
+      let finalTitle = title;
+      if (!finalTitle) {
+        if (isIsolationEvent && !eventType.includes('sửa chữa xong')) {
+          const isoTypeSelect = document.getElementById('event-isolation-type');
+          const isoType = isoTypeSelect ? isoTypeSelect.value : 'REPAIR';
+          finalTitle = isoType === 'REPAIR' 
+            ? `Báo cáo sự cố & dán nhãn cách ly chờ sửa chữa ${eq.code}` 
+            : `Báo cáo thiết bị hỏng & dán nhãn cách ly chờ thanh lý ${eq.code}`;
+        } else if (eventType.includes('sửa chữa xong')) {
+          finalTitle = `Biên bản khắc phục sự cố & đưa thiết bị ${eq.code} vào hoạt động lại`;
+        } else if (eventType.includes('đã bỏ/thanh lý') || eventType.includes('Loại bỏ')) {
+          finalTitle = `Quyết định thanh lý & loại bỏ thiết bị ${eq.code}`;
+        } else if (eventType.includes('người theo dõi')) {
+          finalTitle = `Biên bản bàn giao thiết bị ${eq.code}`;
+        } else {
+          finalTitle = `${eventType} - ${eq.code}`;
+        }
+      }
+
       if (!eq.events) eq.events = [];
       eq.events.unshift({
         id: 'evt-' + Date.now(),
         type: eventType,
         date: eventDate,
-        performer: performer || 'Nội bộ',
-        title: title,
+        performer: performer || eq.manager || 'Nội bộ',
+        title: finalTitle,
         details: details,
         certNo: certNo,
         nextDate: nextDateVal,
         attachments: attachments
       });
 
-      // Tự động đồng bộ sang Danh mục NĐ22 và TT20 (Yêu cầu 3)
+      // Tự động đồng bộ sang Danh mục NĐ22 và TT20
       syncNd22AndTt20FromEquipments();
 
       saveEquipmentsToStorage();
@@ -5426,16 +5607,16 @@ ${details ? `- Nội dung bổ sung: ${details}` : ''}`;
       }
 
       closeModal('modal-add-event');
-      let successMsg = 'Đã lưu sự kiện vòng đời và cập nhật đồng bộ sang NĐ22 & TT20!';
-      if (eventType === 'Thay đổi người theo dõi/sử dụng') {
+      let successMsg = 'Đã lưu sự kiện vòng đời và cập nhật vào hồ sơ thiết bị thành công!';
+      if (eventType.includes('người theo dõi')) {
         successMsg = 'Đã ghi nhận sự kiện bàn giao & cập nhật người theo dõi mới!';
-      } else if (eventType === 'Sự cố/ Cách ly') {
-        successMsg = `Đã dán nhãn cách ly thiết bị ${eq.code} và đưa vào danh sách Chờ sửa/thanh lý!`;
-      } else if (eventType === 'Khắc phục sự cố / Đã sửa chữa xong') {
+      } else if (isIsolationEvent && !eventType.includes('sửa chữa xong')) {
+        successMsg = `Đã ghi nhận sự cố hỏng, dán nhãn cách ly thiết bị ${eq.code} vào Nhật Ký Sự Kiện Vòng Đời!`;
+      } else if (eventType.includes('sửa chữa xong')) {
         const catName = (EQUIPMENT_CATEGORIES[eq.category] && EQUIPMENT_CATEGORIES[eq.category].name) || `Nhóm ${eq.category}`;
-        successMsg = `Đã khắc phục sự cố thành công! Thiết bị ${eq.code} được đưa trở lại danh mục [${catName}].`;
-      } else if (eventType === 'Thiết bị đã bỏ/thanh lý' || eventType === 'Loại bỏ / Thanh lý') {
-        successMsg = `Đã hoàn tất ghi nhận sự kiện thiết bị ${eq.code} đã bỏ/thanh lý!`;
+        successMsg = `Đã ghi nhận sửa chữa xong! Thiết bị ${eq.code} được đưa trở lại danh mục [${catName}] và lưu vào nhật ký sự kiện.`;
+      } else if (eventType.includes('đã bỏ/thanh lý') || eventType.includes('Loại bỏ')) {
+        successMsg = `Đã hoàn tất ghi nhận sự kiện thiết bị ${eq.code} đã bỏ/thanh lý vào nhật ký sự kiện!`;
       }
       showToast(successMsg, 'success');
     }
@@ -5594,6 +5775,9 @@ ${details ? `- Nội dung bổ sung: ${details}` : ''}`;
       }
 
       let eq = isEdit ? appState.equipments.find(item => item.id === eqId) : null;
+      const oldCat = isEdit && eq ? String(eq.category || '1').trim() : '1';
+      const oldManager = isEdit && eq ? String(eq.manager || '').trim() : '';
+
       if (!eq) {
         eq = {
           id: 'eq-' + Date.now(),
@@ -5636,6 +5820,85 @@ ${details ? `- Nội dung bổ sung: ${details}` : ''}`;
       const tt20Sel = document.getElementById('form-eq-tt20-section');
       if (tt20Sel) eq.tt20_section = tt20Sel.value;
 
+      if (!eq.events) eq.events = [];
+
+      // TỰ ĐỘNG GHI NHẬN SỰ KIỆN VÒNG ĐỜI KHI THAY ĐỔI TRẠNG THÁI / PHÂN LOẠI
+      const newCat = String(category).trim();
+      const noteLow = (eq.note || '').toLowerCase();
+      const isNowBroken = newCat === '7' || noteLow.includes('hỏng') || noteLow.includes('chờ sửa') || noteLow.includes('sự cố');
+      const wasBroken = oldCat === '7' || eq.isIsolated;
+
+      if (isNowBroken && !wasBroken) {
+        if (oldCat !== '7') eq.previousCategory = oldCat;
+        eq.isIsolated = true;
+        const isRepairWait = noteLow.includes('chờ sửa') || noteLow.includes('sửa') || !noteLow.includes('thanh lý');
+        eq.isolatedType = isRepairWait ? 'REPAIR' : 'DISPOSAL';
+        eq.status = isRepairWait ? 'ISOLATED_REPAIR' : 'ISOLATED_DISPOSAL';
+        if (!eq.note) {
+          eq.note = isRepairWait ? 'Sự cố - Cách ly chờ sửa chữa (Khoản 6.4.9 ISO 17025)' : 'Đã hỏng - Cách ly chờ thanh lý (Khoản 6.4.9 ISO 17025)';
+        }
+
+        // Tự động ghi nhận vào Nhật Ký Sự Kiện Vòng Đời & Hồ Sơ
+        eq.events.unshift({
+          id: 'evt-iso-' + Date.now(),
+          type: isRepairWait ? 'Sự cố / Hỏng - Cách ly chờ sửa chữa' : 'Sự cố / Hỏng - Cách ly chờ thanh lý',
+          date: eq.lastCalibMaintDate || new Date().toISOString().split('T')[0],
+          performer: eq.manager || 'Phòng KN Hóa học',
+          title: isRepairWait ? `Báo cáo sự cố & dán nhãn cách ly chờ sửa chữa thiết bị ${eq.code}` : `Báo cáo thiết bị hỏng & dán nhãn cách ly chờ thanh lý ${eq.code}`,
+          details: `SỰ CỐ & DÁN NHÃN CÁCH LY THIẾT BỊ (KHOẢN 6.4.9 ISO 17025):\n- Mục đích cách ly: ${isRepairWait ? 'Cách ly - Chờ sửa chữa' : 'Cách ly - Chờ thanh lý'}\n- Lý do: ${eq.note}\n- Biện pháp cách ly & Dán nhãn: Dán nhãn ${isRepairWait ? 'vàng/đỏ THIẾT BỊ SỰ CỐ - CÁCH LY CHỜ SỬA CHỮA' : 'đỏ THIẾT BỊ HỎNG - CÁCH LY CHỜ THANH LÝ'}, ngắt nguồn điện và đưa vào khu vực cách ly tránh sử dụng nhầm.\n- Cán bộ phụ trách: ${eq.manager || 'Phòng KN Hóa học'}`,
+          attachments: [
+            {
+              id: 'sticker-' + Date.now(),
+              name: isRepairWait ? 'Nhan_Cach_Ly_Cho_Sua_Chua.png' : 'Nhan_Cach_Ly_Cho_Thanh_Ly.png',
+              type: 'image/png',
+              data: SAMPLE_STICKER_B64
+            }
+          ]
+        });
+      } else if (!isNowBroken && wasBroken) {
+        // Phục hồi từ tình trạng hỏng/chờ sửa về hoạt động bình thường
+        eq.isIsolated = false;
+        eq.isolatedType = null;
+        eq.isDisposed = false;
+        eq.status = 'OPERATIONAL';
+        eq.events.unshift({
+          id: 'evt-restore-' + Date.now(),
+          type: 'Khắc phục sự cố / Đã sửa chữa xong',
+          date: new Date().toISOString().split('T')[0],
+          performer: eq.performer || eq.manager || 'Kỹ thuật viên / Nội bộ',
+          title: `Khắc phục sự cố & đưa thiết bị ${eq.code} vào hoạt động lại`,
+          details: `KHẮC PHỤC SỰ CỐ / ĐÃ SỬA CHỮA XONG - ĐƯA VÀO HOẠT ĐỘNG LẠI:\n- Phục hồi về danh mục: Nhóm ${newCat} (${(EQUIPMENT_CATEGORIES[newCat] && EQUIPMENT_CATEGORIES[newCat].label) || 'Thiết bị'})\n- Kết quả kiểm tra: Thiết bị đã được khắc phục và kiểm tra kỹ thuật đạt yêu cầu, hoạt động ổn định và đưa vào sử dụng lại bình thường.\n- Cán bộ xác nhận: ${eq.manager || 'Phòng KN Hóa học'}`,
+          attachments: []
+        });
+      }
+
+      // Tự động ghi nhận nếu có thay đổi Người theo dõi/phụ trách
+      const newManager = String(eq.manager || '').trim();
+      if (isEdit && oldManager && newManager && oldManager !== newManager) {
+        eq.events.unshift({
+          id: 'evt-custody-' + Date.now(),
+          type: 'Thay đổi người theo dõi/sử dụng',
+          date: eq.trackingDate || new Date().toISOString().split('T')[0],
+          performer: 'Phòng KN Hóa học',
+          title: `Bàn giao quyền theo dõi và vận hành thiết bị ${eq.code}`,
+          details: `BÀN GIAO THIẾT BỊ:\n- Người bàn giao (Cũ): ${oldManager}\n- Người nhận bàn giao (Mới): ${newManager}\n- Ngày hiệu lực: ${formatDateDisplay(eq.trackingDate || new Date().toISOString().split('T')[0])}`,
+          attachments: []
+        });
+      }
+
+      // Tự động ghi nhận sự kiện Tiếp nhận nếu là thiết bị mới tinh và có ngày nhận/vận hành
+      if (!isEdit && eq.events.length === 0 && (eq.receiveDate || eq.operateDate)) {
+        eq.events.push({
+          id: 'evt-recv-' + Date.now(),
+          type: 'Tiếp nhận thiết bị',
+          date: eq.operateDate || eq.receiveDate,
+          performer: eq.supplier || eq.manager || 'Hội đồng nghiệm thu',
+          title: `Tiếp nhận & nghiệm thu đưa vào vận hành thiết bị ${eq.code}`,
+          details: `TIẾP NHẬN THIẾT BỊ VÀ ĐƯA VÀO SỬ DỤNG:\n- Model: ${eq.model || '—'} | S/N: ${eq.serialNo || '—'}\n- Nhà cung cấp: ${eq.supplier || '—'}\n- Tình trạng khi nhận: ${eq.receiveStatus || 'Mới (nguyên đai/kiện)'}\n- Vị trí lắp đặt: ${eq.location || 'Phòng KN Hóa học'}\n- Cán bộ nhận bàn giao: ${eq.manager || 'Phòng KN Hóa học'}`,
+          attachments: []
+        });
+      }
+
       syncNd22AndTt20FromEquipments();
       saveEquipmentsToStorage();
       populateManagerDropdowns();
@@ -5647,7 +5910,7 @@ ${details ? `- Nội dung bổ sung: ${details}` : ''}`;
       checkAndRenderAlerts();
 
       closeModal('modal-equipment-form');
-      showToast(isEdit ? `Đã cập nhật thiết bị ${code}!` : `Đã thêm mới thiết bị ${code}!`, 'success');
+      showToast(isEdit ? `Đã cập nhật thiết bị ${code} và lưu vào nhật ký sự kiện!` : `Đã thêm mới thiết bị ${code}!`, 'success');
     }
 
     function deleteEquipment(eqId) {
@@ -6795,6 +7058,7 @@ Lưu ý: Nếu thiết bị hỏng, khuyến nghị dùng chức năng "Loại b
             }
           }
 
+          ensureAllEquipmentsLifecycleEvents();
           syncNd22AndTt20FromEquipments();
           populateManagerDropdowns();
           updateMetricCards();
@@ -7659,6 +7923,7 @@ function getAccountsFromSheet(ss) {
           countMsg.push(`${data.accounts.length} tài khoản`);
         }
 
+        ensureAllEquipmentsLifecycleEvents();
         saveEquipmentsToStorage(true);
         syncNd22AndTt20FromEquipments();
         populateManagerDropdowns();
